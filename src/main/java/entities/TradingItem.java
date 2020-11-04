@@ -5,6 +5,7 @@ import lombok.*;
 @Data
 public class TradingItem {
 
+    private int id;
     private String itemName;
     private TradingItemType itemCategory = TradingItemType.DEFAULT;
     private Long itemPrice = 0L;
@@ -18,6 +19,7 @@ public class TradingItem {
         this.itemCategory = itemCategory;
         this.itemPrice = itemPrice;
     }
+
 
 //    @Getter
 //    @Setter
