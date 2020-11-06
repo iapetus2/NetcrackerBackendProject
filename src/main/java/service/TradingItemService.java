@@ -3,6 +3,7 @@ package service;
 import entities.TradingItem;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public interface TradingItemService {
 
@@ -10,10 +11,10 @@ public interface TradingItemService {
 
     List<TradingItem> readAll();
 
-    TradingItem read(int id);
+    TradingItem read(AtomicInteger id);
 
-    boolean update(TradingItem tradingItem, int id);
+    boolean update(TradingItem tradingItem, AtomicInteger id);
 
-    boolean delete(int id);
+    boolean delete(AtomicInteger id);
 
 }
