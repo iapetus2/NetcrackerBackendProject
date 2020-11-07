@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.TradingItemService;
-
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 @RestController
 public class TradingItemController {
@@ -27,7 +26,7 @@ public class TradingItemController {
     }
 
     @GetMapping(value = "/api/item/{id}")
-    public ResponseEntity<TradingItem> read(@PathVariable(name = "id") AtomicInteger id) {
+    public ResponseEntity<TradingItem> read(@PathVariable(name = "id") int id) {
         final TradingItem tradingItem = tradingItemService.read(id);
 
         return tradingItem != null
@@ -45,7 +44,7 @@ public class TradingItemController {
     }
 
     @PutMapping(value = "/api/item/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") AtomicInteger id, @RequestBody TradingItem tradingItem) {
+    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody TradingItem tradingItem) {
         final boolean updated = tradingItemService.update(tradingItem, id);
 
         return updated
@@ -54,7 +53,7 @@ public class TradingItemController {
     }
 
     @DeleteMapping(value = "/api/item/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") AtomicInteger id) {
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
         final boolean deleted = tradingItemService.delete(id);
 
         return deleted

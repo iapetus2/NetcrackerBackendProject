@@ -3,12 +3,9 @@ package service;
 import entities.TradingItem;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class TradingItemServiceImpl implements TradingItemService{
-
-    private static final AtomicInteger ITEM_ID_HOLDER = new AtomicInteger();
+public class TradingItemServiceImpl implements service.TradingItemService {
 
     @Override
     public void create(TradingItem tradingItem) {
@@ -22,17 +19,17 @@ public class TradingItemServiceImpl implements TradingItemService{
     }
 
     @Override
-    public TradingItem read(AtomicInteger id) {
+    public TradingItem read(int id) {
         return null;
     }
 
     @Override
-    public boolean update(TradingItem tradingItem, AtomicInteger id) {
+    public boolean update(TradingItem tradingItem, int id) {
         return false;
     }
 
     @Override
-    public boolean delete(AtomicInteger id) {
+    public boolean delete(int id) {
         return false;
     }
 }

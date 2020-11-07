@@ -1,9 +1,7 @@
 package service;
 
 import entities.TradingItem;
-
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public interface TradingItemService {
 
@@ -11,10 +9,10 @@ public interface TradingItemService {
 
     List<TradingItem> readAll();
 
-    TradingItem read(AtomicInteger id);
+    TradingItem read(int id);
 
-    boolean update(TradingItem tradingItem, AtomicInteger id);
+    boolean update(TradingItem tradingItem, int id);
 
-    boolean delete(AtomicInteger id);
+    boolean delete(int id);
 
 }

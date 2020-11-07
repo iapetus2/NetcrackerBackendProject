@@ -14,6 +14,7 @@ public class User {
     @NonNull
     private AtomicInteger userId;
     private String userName;
-    private Long cash;
-    private List<Order> orders;
+    private long cash;
+    private List<entities.Order> orders;
+    private List<entities.Deal> deals;
 }

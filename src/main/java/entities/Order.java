@@ -12,11 +12,11 @@ public class Order {
     @NonNull
     private AtomicInteger orderId;
     @NonNull
-    private final TradingItem tradingItem;
+    private final entities.TradingItem tradingItem;
     @NonNull
-    private final OrderType orderType;
+    private final entities.OrderType orderType;
     @NonNull
-    private final Long orderPrice;
+    private final long orderPrice;
     @NonNull
     private Date orderDate;
 
