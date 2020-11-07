@@ -1,4 +1,4 @@
-package entities;
+package com.projectparty.entities;
 
 import lombok.Data;
 import lombok.NonNull;
@@ -12,9 +12,9 @@ public class Order {
     @NonNull
     private AtomicInteger orderId;
     @NonNull
-    private final entities.TradingItem tradingItem;
+    private final TradingItem tradingItem;
     @NonNull
-    private final entities.OrderType orderType;
+    private final OrderType orderType;
     @NonNull
     private final long orderPrice;
     @NonNull

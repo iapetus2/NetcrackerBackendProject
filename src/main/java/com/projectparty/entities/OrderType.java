@@ -1,4 +1,4 @@
-package entities;
+package com.projectparty.entities;
 
 public enum OrderType {
     BUY,

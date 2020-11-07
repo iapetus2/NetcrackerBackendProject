@@ -1,6 +1,6 @@
-package service;
+package com.projectparty.service;
 
-import entities.TradingItem;
+import com.projectparty.entities.TradingItem;
 import java.util.List;
 
 public interface TradingItemService {

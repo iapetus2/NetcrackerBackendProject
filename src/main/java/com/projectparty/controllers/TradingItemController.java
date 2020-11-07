@@ -1,11 +1,12 @@
-package controllers;
+package com.projectparty.controllers;
 
-import entities.TradingItem;
+import com.projectparty.entities.TradingItem;
+import com.projectparty.service.TradingItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.TradingItemService;
+
 import java.util.List;
 
 

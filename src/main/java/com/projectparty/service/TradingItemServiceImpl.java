@@ -1,11 +1,11 @@
-package service;
+package com.projectparty.service;
 
-import entities.TradingItem;
+import com.projectparty.entities.TradingItem;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TradingItemServiceImpl implements service.TradingItemService {
+public class TradingItemServiceImpl implements TradingItemService {
 
     @Override
     public void create(TradingItem tradingItem) {

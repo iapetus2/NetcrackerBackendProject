@@ -1,4 +1,4 @@
-package entities;
+package com.projectparty.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +15,6 @@ public class User {
     private AtomicInteger userId;
     private String userName;
     private long cash;
-    private List<entities.Order> orders;
-    private List<entities.Deal> deals;
+    private List<Order> orders;
+    private List<Deal> deals;
 }

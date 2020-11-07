@@ -1,4 +1,4 @@
-package entities;
+package com.projectparty.entities;
 
 import lombok.*;
 import java.util.Date;
@@ -11,7 +11,7 @@ public class TradingItem {
     private final int itemId;
     @NonNull
     private final String itemName;
-    private entities.TradingItemType itemCategory;
+    private TradingItemType itemCategory;
     private long itemPrice;
     private Date itemDate;
 
