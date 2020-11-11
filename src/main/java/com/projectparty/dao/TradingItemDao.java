@@ -57,11 +57,13 @@ public class TradingItemDao {
         return true;
     }
 
-    public boolean delete(TradingItem tradingItem) {
+    public boolean delete(int id) {
         try {
+            TradingItem tradingItem;
             Session session = HibernateSessionFactoryUtil
                     .getSessionFactory()
                     .openSession();
+            tradingItem = session.load(TradingItem.class, id);
             Transaction tx1 = session
                     .beginTransaction();
             session.delete(tradingItem);

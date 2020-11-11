@@ -13,6 +13,6 @@ public interface TradingItemService {
 
     boolean update(TradingItem tradingItem, int id);
 
-    boolean delete(TradingItem tradingItem);
+    boolean delete(int id);
 
 }

@@ -21,7 +21,7 @@ public class App {
         tradingItemService.save(tradingItem);
         tradingItemService.save(tradingItem2);
         System.out.println(tradingItem.getItemId());
-        tradingItemService.delete(tradingItem);
+        tradingItemService.delete(tradingItem.getItemId());
 
     }
 

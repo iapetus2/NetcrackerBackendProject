@@ -54,8 +54,8 @@ public class TradingItemController {
     }
 
     @DeleteMapping(value = "/api/item/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") TradingItem tradingItem) {
-        final boolean deleted = tradingItemService.delete(tradingItem);
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
+        final boolean deleted = tradingItemService.delete(id);
 
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)

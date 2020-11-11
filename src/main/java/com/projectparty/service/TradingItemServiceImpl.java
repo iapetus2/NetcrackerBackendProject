@@ -33,7 +33,7 @@ public class TradingItemServiceImpl implements TradingItemService {
     }
 
     @Override
-    public boolean delete(TradingItem tradingItem) {
-        return itemsDao.delete(tradingItem);
+    public boolean delete(int id) {
+        return itemsDao.delete(id);
     }
 }
