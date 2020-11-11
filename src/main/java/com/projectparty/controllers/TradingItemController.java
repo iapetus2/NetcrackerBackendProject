@@ -21,8 +21,8 @@ public class TradingItemController {
     }
 
     @PostMapping(value = "/api/item")
-    public ResponseEntity<?> create(@RequestBody TradingItem item) {
-        tradingItemService.create(item);
+    public ResponseEntity<?> save(@RequestBody TradingItem item) {
+        tradingItemService.save(item);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -54,8 +54,8 @@ public class TradingItemController {
     }
 
     @DeleteMapping(value = "/api/item/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
-        final boolean deleted = tradingItemService.delete(id);
+    public ResponseEntity<?> delete(@PathVariable(name = "id") TradingItem tradingItem) {
+        final boolean deleted = tradingItemService.delete(tradingItem);
 
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)

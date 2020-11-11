@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface TradingItemService {
 
-    void create(TradingItem tradingItem);
+    void save(TradingItem tradingItem);
 
     List<TradingItem> readAll();
 
@@ -13,6 +13,6 @@ public interface TradingItemService {
 
     boolean update(TradingItem tradingItem, int id);
 
-    boolean delete(int id);
+    boolean delete(TradingItem tradingItem);
 
 }

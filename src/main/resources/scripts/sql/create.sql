@@ -1,5 +1,5 @@
 create table TradingItem(
-                            id int not null,
+                            id int primary key not null,
                             name nvarchar(100) not null,
                             type nvarchar(100),
                             price bigint,
@@ -7,7 +7,7 @@ create table TradingItem(
 );
 
 create table Orders(
-                            id int not null,
+                            id int primary key not null,
                             tradingItemName nvarchar(100) not null,
                             type varchar(5),
                             price bigint,
@@ -16,14 +16,14 @@ create table Orders(
 
 
 create table Users(
-                            id int not null,
+                            id int primary key not null,
                             name nvarchar(100) not null,
                             surname nvarchar(100) not null,
                             cash bigint
 );
 
 create table Deals(
-                            id int not null,
+                            id int primary key not null,
                             tradingItemName nvarchar(100) not null,
                             price bigint,
                             dealDate date

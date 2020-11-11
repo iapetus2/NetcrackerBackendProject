@@ -1,15 +1,19 @@
 package com.projectparty.service;
 
+import com.projectparty.dao.TradingItemDao;
 import com.projectparty.entities.TradingItem;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class TradingItemServiceImpl implements TradingItemService {
 
+    private TradingItemDao itemsDao = new TradingItemDao();
+
     @Override
-    public void create(TradingItem tradingItem) {
-        //TODO adding to db
+    public void save(TradingItem tradingItem) {
+        itemsDao.save(tradingItem);
     }
 
     @Override
@@ -20,16 +24,16 @@ public class TradingItemServiceImpl implements TradingItemService {
 
     @Override
     public TradingItem read(int id) {
-        return null;
+        return itemsDao.read(id);
     }
 
     @Override
     public boolean update(TradingItem tradingItem, int id) {
-        return false;
+        return itemsDao.update(tradingItem, id);
     }
 
     @Override
-    public boolean delete(int id) {
-        return false;
+    public boolean delete(TradingItem tradingItem) {
+        return itemsDao.delete(tradingItem);
     }
 }

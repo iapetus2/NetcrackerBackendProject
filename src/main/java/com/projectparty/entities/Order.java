@@ -15,7 +15,6 @@ public class Order {
     private final TradingItem tradingItem;
     @NonNull
     private final OrderType orderType;
-    @NonNull
     private final long orderPrice;
     @NonNull
     private Date orderDate;
