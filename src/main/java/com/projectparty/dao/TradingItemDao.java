@@ -4,21 +4,32 @@ import com.projectparty.entities.TradingItem;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.PersistenceContext;
+import java.util.logging.*;
+
+
+@Component
 public class TradingItemDao {
+    Logger logger = Logger.getLogger(TradingItemDao.class.getName());
+
+
+    @PersistenceContext
+    HibernateSessionFactoryUtil session;
 
     public void save(TradingItem tradingItem) {
         try {
             Session session = HibernateSessionFactoryUtil
                     .getSessionFactory()
                     .openSession();
-            Transaction tx1 = session
+            Transaction transaction = session
                     .beginTransaction();
             session.save(tradingItem);
-            tx1.commit();
+            transaction.commit();
             session.close();
         }catch (Exception e){
-            System.out.println("Create failure");
+            logger.log(Level.SEVERE, "Exception: ", e);
         }
 
     }
@@ -41,40 +52,38 @@ public class TradingItemDao {
     }
 
     public boolean update(TradingItem tradingItem, int id) {
-        try {
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction tx1 = session.beginTransaction();
-            session.update(tradingItem);
-            tx1.commit();
-            session.close();
+        try{
+        Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession();
+        session.load(TradingItem.class, id);
+        Transaction transaction = session
+                .beginTransaction();
+        session.update(tradingItem);
+        transaction.commit();
+        session.close();
         }catch (Exception e){
-            System.out.println("Update failure");
-
-            return false;
+            throw new RuntimeException("Update failure");
         }
-        System.out.println("Successfully updated");
 
         return true;
     }
 
     public boolean delete(int id) {
-        try {
-            TradingItem tradingItem;
-            Session session = HibernateSessionFactoryUtil
-                    .getSessionFactory()
-                    .openSession();
-            tradingItem = session.load(TradingItem.class, id);
-            Transaction tx1 = session
-                    .beginTransaction();
-            session.delete(tradingItem);
-            tx1.commit();
-            session.close();
-        }catch (Exception e){
-            System.out.println("Delete failure");
-
-            return false;
+        try{
+        TradingItem proxyTradingItem;
+        Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession();
+        proxyTradingItem = session.load(TradingItem.class, id);
+        Transaction transaction = session
+                .beginTransaction();
+        session.delete(proxyTradingItem);
+        transaction.commit();
+        session.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failure");
         }
-        System.out.println("Successfully deleted");
 
         return true;
     }
