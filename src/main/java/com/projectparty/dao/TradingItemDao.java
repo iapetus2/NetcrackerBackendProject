@@ -6,17 +6,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PersistenceContext;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Component
 public class TradingItemDao {
     Logger logger = Logger.getLogger(TradingItemDao.class.getName());
-
-
-    @PersistenceContext
-    HibernateSessionFactoryUtil session;
 
     public void save(TradingItem tradingItem) {
         try {
