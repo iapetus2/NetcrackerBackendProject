@@ -1,17 +1,44 @@
 package com.projectparty.service;
 
+import com.projectparty.dao.DealDao;
 import com.projectparty.entities.Deal;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
-public interface DealService {
-    void save(Deal deal);
+@Service
+public class DealService implements DealServiceInterface {
 
-    List<Deal> readAll();
+    private DealDao itemsDao = new DealDao();
 
-    Deal read(int id);
+    @Override
+    public void save(Deal deal) {
+        itemsDao.save(deal);
+    }
 
-    boolean update(Deal deal, int id);
+    @Override
+    public List<Deal> readAll() {
+        return itemsDao.readAll();
+    }
 
-    boolean delete(int id);
+    @Override
+    public Deal read(int id) {
+        return itemsDao.read(id);
+    }
+
+    @Override
+    public boolean update(Deal deal, int id) {
+        return itemsDao.update(deal, id);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return itemsDao.delete(id);
+    }
+
+
+
+
+
 }

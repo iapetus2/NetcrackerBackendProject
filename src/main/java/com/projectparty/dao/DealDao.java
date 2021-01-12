@@ -3,20 +3,19 @@ package com.projectparty.dao;
 import com.projectparty.entities.Deal;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 @Component
 public class DealDao {
     Logger logger = Logger.getLogger(DealDao.class.getName());
-
-
-    @PersistenceContext
-    HibernateSessionFactoryUtil session;
 
     public void save(Deal deal) {
         try {
@@ -34,15 +33,13 @@ public class DealDao {
 
     }
 
-//todo make it clear how to do that
-
-//    List<Deal> readAll() {
-//        return (List<Deal>)  HibernateSessionFactoryUtil
-//                .getSessionFactory()
-//                .openSession()
-//                .createQuery("FROM Deal")
-//                .list();
-//    }
+    public List<Deal> readAll() {
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("FROM Deal", Deal.class)
+                .list();
+    }
 
     public Deal read(int id) {
         return HibernateSessionFactoryUtil

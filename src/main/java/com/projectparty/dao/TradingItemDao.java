@@ -3,9 +3,12 @@ package com.projectparty.dao;
 import com.projectparty.entities.TradingItem;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,15 +33,13 @@ public class TradingItemDao {
 
     }
 
-//todo make it clear how to do that
-
-//    List<TradingItem> readAll() {
-//        return (List<TradingItem>)  HibernateSessionFactoryUtil
-//                .getSessionFactory()
-//                .openSession()
-//                .createQuery("FROM TradingItem")
-//                .list();
-//    }
+    public List<TradingItem> readAll() {
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("FROM TradingItem", TradingItem.class)
+                .list();
+    }
 
     public TradingItem read(int id) {
         return HibernateSessionFactoryUtil

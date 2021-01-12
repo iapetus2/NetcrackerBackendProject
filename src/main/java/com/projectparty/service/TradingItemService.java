@@ -20,8 +20,7 @@ public class TradingItemService implements TradingItemServiceInterface {
 
     @Override
     public List<TradingItem> readAll() {
-        //TODO getting from db
-        return null;
+        return itemsDao.readAll();
     }
 
     @Override
