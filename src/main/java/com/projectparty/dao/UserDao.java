@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,15 +31,14 @@ public class UserDao {
 
     }
 
-//todo make it clear how to do that
 
-//    List<User> readAll() {
-//        return (List<User>)  HibernateSessionFactoryUtil
-//                .getSessionFactory()
-//                .openSession()
-//                .createQuery("FROM User")
-//                .list();
-//    }
+    public List<User> readAll() {
+        return (List<User>)  HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("FROM User", User.class)
+                .list();
+    }
 
     public User read(int id) {
         return HibernateSessionFactoryUtil
