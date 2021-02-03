@@ -33,18 +33,5 @@ public class Deal {
     @ManyToOne
     @Column(name = "tradingItemName")
     private TradingItem dealItem;
-    
-    @PostUpdate
-    public void onUpdate() {
-        System.out.println("Updated!");
-        MessageController controller = new MessageController();
-        GraphMessage graphMessage = new GraphMessage(this.dealPrice);
-
-        try {
-            controller.send(graphMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
