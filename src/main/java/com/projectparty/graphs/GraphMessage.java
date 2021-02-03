@@ -38,4 +38,12 @@ public class GraphMessage{
     public String getTimeStamp() {
         return timeStamp;
     }
+
+    @Override
+    public String toString() {
+        return "GraphMessage{" +
+                "price=" + price +
+                ", timeStamp='" + timeStamp + '\'' +
+                '}';
+    }
 }
