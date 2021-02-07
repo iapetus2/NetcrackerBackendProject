@@ -2,93 +2,109 @@
   <div class="container">
     <div class="row mt-5">
       <div class="col">
-        <h1 class="text-center">COVID-19 DATA</h1>
-      </div>
-    </div>
-    <div class="row mt-5" v-if="arrPositive.length > 0">
-      <div class="col">
-        <h2 class="text-center">Positive</h2>
-        <line-chart
-          :chartData="arrPositive"
-          :options="chartOptions"
-          :chartColors="positiveChartColors"
-          label="Positive"
-        />
+<!--        <router-link to="/">Home</router-link>-->
+        <router-link to="/details">
+        <h1 class="text-center">Trading Platform</h1>
+        </router-link>
       </div>
     </div>
 
-    <div class="row mt-5" v-if="arrHospitalized.length > 0">
+    <div class="row mt-5">
       <div class="col">
-        <h2 class="text-center">Hospitalized</h2>
-        <line-chart
-          :chartData="arrHospitalized"
-          :options="chartOptions"
-          :chartColors="hospitalizedChartColors"
-          label="Hospitalized"
-        />
+        <h2 class="text-center">
+          <router-link to="/">Quotes</router-link>
+          <router-link :to="'/room'">Rooms</router-link>
+          <router-link :to="'/user'">Community</router-link>
+        </h2>
+      </div>
+    </div>
+    <div id="blog-posts-events-demo">
+      <div :style="{ fontSize: postFontSize + 'em' }">
+        <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            v-on:enlarge-text="postFontSize += $event"
+        ></blog-post>
       </div>
     </div>
 
-    <div class="row mt-5" v-if="arrInIcu.length > 0">
-      <div class="col">
-        <h2 class="text-center">In ICU</h2>
-        <line-chart
-          :chartData="arrInIcu"
-          :options="chartOptions"
-          :chartColors="inIcuColors"
-          label="In ICU"
-        />
-      </div>
-    </div>
 
-    <div class="row mt-5" v-if="arrOnVentilators.length > 0">
-      <div class="col">
-        <h2 class="text-center">On Ventilators</h2>
-        <line-chart
-          :chartData="arrOnVentilators"
-          :options="chartOptions"
-          :chartColors="onVentilatorsColors"
-          label="On Ventilators"
-        />
-      </div>
-    </div>
 
-    <div class="row mt-5" v-if="arrRecovered.length > 0">
-      <div class="col">
-        <h2 class="text-center">Recovered</h2>
-        <line-chart
-          :chartData="arrRecovered"
-          :options="chartOptions"
-          :chartColors="recoveredColors"
-          label="Recovered"
-        />
-      </div>
-    </div>
+<!--    <div class="row mt-5" v-if="arrPositive.length > 0">-->
+<!--      <div class="col">-->
+<!--        <h2 class="text-center">Price</h2>-->
+<!--        <line-chart-->
+<!--          :chartData="arrPositive"-->
+<!--          :options="chartOptions"-->
+<!--          :chartColors="positiveChartColors"-->
+<!--          label="Price"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="row mt-5 mb-5">
-      <div class="col">
-        <h2 class="text-center">Deaths</h2>
-        <line-chart
-          v-if="arrDeaths.length > 0"
-          :chartData="arrDeaths"
-          :options="chartOptions"
-          :chartColors="deathColors"
-          label="Deaths"
-        />
-      </div>
-    </div>
+<!--    <div class="row mt-5" v-if="arrHospitalized.length > 0">-->
+<!--      <div class="col">-->
+<!--        <h2 class="text-center">Number of sold items</h2>-->
+<!--        <line-chart-->
+<!--          :chartData="arrHospitalized"-->
+<!--          :options="chartOptions"-->
+<!--          :chartColors="hospitalizedChartColors"-->
+<!--          label="Number of sold items"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="row mt-5" v-if="arrInIcu.length > 0">-->
+<!--      <div class="col">-->
+<!--        <h2 class="text-center">market offers</h2>-->
+<!--        <line-chart-->
+<!--          :chartData="arrInIcu"-->
+<!--          :options="chartOptions"-->
+<!--          :chartColors="inIcuColors"-->
+<!--          label="market offers"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+
   </div>
 </template>
+
+<!--<template>-->
+<!--  <div id="app">-->
+<!--      <router-link to="/">Home</router-link>-->
+<!--      <router-link to="/room">Room</router-link>-->
+<!--      <router-link to="/details">Details</router-link>-->
+<!--  </div>-->
+<!--</template>-->
+
+<!--<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>-->
+
 
 <script>
 import axios from "axios";
 import moment from "moment";
+import Vue from "vue";
 
-import LineChart from "./components/LineChart";
+// import LineChart from "./components/LineChart";
+
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+    <h3>{{ post.title }}</h3>
+    <button v-on:click="$emit('enlarge-text')">
+      Увеличить размер текста
+    </button>
+    <div v-html="post.content"></div>
+    </div>
+  `
+})
+
 
 export default {
   components: {
-    LineChart
+    // LineChart
   },
   data() {
     return {
@@ -166,4 +182,8 @@ export default {
 </script>
 
 <style>
+#app a {
+  font-weight: bold;
+  color: #2c3e50;
+}
 </style>
