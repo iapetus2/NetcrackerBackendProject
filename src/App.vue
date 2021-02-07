@@ -2,22 +2,64 @@
   <div class="container">
     <div class="row mt-5">
       <div class="col">
-<!--        <router-link to="/">Home</router-link>-->
+        <!--        <router-link to="/">Home</router-link>-->
         <router-link to="/details">
-        <h1 class="text-center">Trading Platform</h1>
+          <h1 class="text-center">Trading Platform</h1>
         </router-link>
       </div>
     </div>
 
     <div class="row mt-5">
       <div class="col">
-        <h2 class="text-center">
-          <router-link to="/">Quotes</router-link>
-          <router-link :to="'/room'">Rooms</router-link>
-          <router-link :to="'/user'">Community</router-link>
-        </h2>
+        <div class="sample">
+          <h2 class="text-center">
+            <router-link to="/">Quotes</router-link>
+            <router-link :to="'/room'">Rooms</router-link>
+            <router-link :to="'/user'">Community</router-link>
+          </h2>
+        </div>
       </div>
     </div>
+
+    <div class="card">
+      <div class="text-center">
+        <h3>Дефолтное название продукта</h3>
+        <button v-on:click="$emit('enlarge-text')">
+          Войти в комнату
+        </button>
+        <h4>Дополнительная информация о комнате</h4>
+      </div>
+    </div>
+    <div class="card">
+      <div class="text-center">
+        <h3>Дефолтное название продукта</h3>
+        <button v-on:click="$emit('enlarge-text')">
+          Войти в комнату
+        </button>
+        <h4>Дополнительная информация о комнате</h4>
+      </div>
+    </div>
+    <div class="card">
+      <div class="text-center">
+        <h3>Дефолтное название продукта</h3>
+        <button v-on:click="$emit('enlarge-text')">
+          Войти в комнату
+        </button>
+        <h4>Дополнительная информация о комнате</h4>
+      </div>
+    </div>
+    <div class="card">
+      <div class="text-center">
+        <h3>Дефолтное название продукта</h3>
+        <button v-on:click="$emit('enlarge-text')">
+          Войти в комнату
+        </button>
+        <h4>Дополнительная информация о комнате</h4>
+      </div>
+    </div>
+
+
+
     <div id="blog-posts-events-demo">
       <div :style="{ fontSize: postFontSize + 'em' }">
         <blog-post
@@ -30,42 +72,41 @@
     </div>
 
 
+    <div class="row mt-5" v-if="arrPositive.length > 0">
+      <div class="col">
+        <h2 class="text-center">Price</h2>
+        <line-chart
+            :chartData="arrPositive"
+            :options="chartOptions"
+            :chartColors="positiveChartColors"
+            label="Price"
+        />
+      </div>
+    </div>
 
-<!--    <div class="row mt-5" v-if="arrPositive.length > 0">-->
-<!--      <div class="col">-->
-<!--        <h2 class="text-center">Price</h2>-->
-<!--        <line-chart-->
-<!--          :chartData="arrPositive"-->
-<!--          :options="chartOptions"-->
-<!--          :chartColors="positiveChartColors"-->
-<!--          label="Price"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="row mt-5" v-if="arrHospitalized.length > 0">-->
+    <!--      <div class="col">-->
+    <!--        <h2 class="text-center">Number of sold items</h2>-->
+    <!--        <line-chart-->
+    <!--          :chartData="arrHospitalized"-->
+    <!--          :options="chartOptions"-->
+    <!--          :chartColors="hospitalizedChartColors"-->
+    <!--          label="Number of sold items"-->
+    <!--        />-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-<!--    <div class="row mt-5" v-if="arrHospitalized.length > 0">-->
-<!--      <div class="col">-->
-<!--        <h2 class="text-center">Number of sold items</h2>-->
-<!--        <line-chart-->
-<!--          :chartData="arrHospitalized"-->
-<!--          :options="chartOptions"-->
-<!--          :chartColors="hospitalizedChartColors"-->
-<!--          label="Number of sold items"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="row mt-5" v-if="arrInIcu.length > 0">-->
-<!--      <div class="col">-->
-<!--        <h2 class="text-center">market offers</h2>-->
-<!--        <line-chart-->
-<!--          :chartData="arrInIcu"-->
-<!--          :options="chartOptions"-->
-<!--          :chartColors="inIcuColors"-->
-<!--          label="market offers"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="row mt-5" v-if="arrInIcu.length > 0">-->
+    <!--      <div class="col">-->
+    <!--        <h2 class="text-center">market offers</h2>-->
+    <!--        <line-chart-->
+    <!--          :chartData="arrInIcu"-->
+    <!--          :options="chartOptions"-->
+    <!--          :chartColors="inIcuColors"-->
+    <!--          label="market offers"-->
+    <!--        />-->
+    <!--      </div>-->
+    <!--    </div>-->
 
   </div>
 </template>
@@ -157,7 +198,7 @@ export default {
     };
   },
   async created() {
-    const { data } = await axios.get("https://covidtracking.com/api/us/daily");
+    const {data} = await axios.get("https://covidtracking.com/api/us/daily");
 
     data.forEach(d => {
       const date = moment(d.date, "YYYYMMDD").format("MM/DD");
@@ -170,12 +211,12 @@ export default {
         death
       } = d;
 
-      this.arrPositive.push({ date, total: positive });
-      this.arrHospitalized.push({ date, total: hospitalizedCurrently });
-      this.arrInIcu.push({ date, total: inIcuCurrently });
-      this.arrOnVentilators.push({ date, total: onVentilatorCurrently });
-      this.arrRecovered.push({ date, total: recovered });
-      this.arrDeaths.push({ date, total: death });
+      this.arrPositive.push({date, total: positive});
+      this.arrHospitalized.push({date, total: hospitalizedCurrently});
+      this.arrInIcu.push({date, total: inIcuCurrently});
+      this.arrOnVentilators.push({date, total: onVentilatorCurrently});
+      this.arrRecovered.push({date, total: recovered});
+      this.arrDeaths.push({date, total: death});
     });
   }
 };
@@ -186,4 +227,19 @@ export default {
   font-weight: bold;
   color: #2c3e50;
 }
+
+div.card {
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 8em;*/
+  width: 500px;
+  border: 1px solid blue;
+  border-radius: 10px;
+  /*margin: 10px;*/
+  padding: 10px;
+}
+div.sample {
+  padding: 10px;
+}
 </style>
+
