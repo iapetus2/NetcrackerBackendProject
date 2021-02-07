@@ -1,4 +1,4 @@
-# covid-19-visualization
+# Netcracker Frontend project
 
 ## Project setup
 ```
