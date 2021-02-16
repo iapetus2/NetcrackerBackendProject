@@ -20,12 +20,11 @@ public class Order {
     @NonNull
     @Id
     @Column(name = "id")
-    private AtomicInteger orderId;
+    private int orderId;
 
     @NonNull
-    @Column(name = "tradingItemName")
-    @ManyToOne
-    private TradingItem tradingItem;
+    @Column(name = "tradingItemId")
+    private int tradingItemId;
 
     @NonNull
     @Column(name = "type")
@@ -37,5 +36,9 @@ public class Order {
     @NonNull
     @Column(name = "creationDate")
     private Date orderDate;
+
+    @NonNull
+    @Column(name = "userId")
+    private int userId;
 
 }
