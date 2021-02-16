@@ -2,15 +2,13 @@ package com.projectparty.dao;
 
 import com.projectparty.entities.TradingItem;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @Component
@@ -27,8 +25,8 @@ public class TradingItemDao {
             session.save(tradingItem);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            logger.log(Level.SEVERE, "Exception: ", e);
+        }catch (RuntimeException e){
+            logger.error("TradingItem creating failure");
         }
 
     }
@@ -59,8 +57,8 @@ public class TradingItemDao {
         session.update(tradingItem);
         transaction.commit();
         session.close();
-        }catch (Exception e){
-            throw new RuntimeException("Update failure");
+        }catch (RuntimeException e){
+            logger.error("TradingItem updating failure");
         }
 
         return true;
@@ -78,8 +76,8 @@ public class TradingItemDao {
         session.delete(proxyTradingItem);
         transaction.commit();
         session.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+        }catch (RuntimeException e){
+            logger.error("TradingItem deleting failure");
         }
 
         return true;

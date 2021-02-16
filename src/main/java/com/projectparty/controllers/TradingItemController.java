@@ -1,7 +1,7 @@
 package com.projectparty.controllers;
 
 import com.projectparty.entities.TradingItem;
-import com.projectparty.service.TradingItemService;
+import com.projectparty.service.TradingItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,10 @@ import java.util.List;
 @RestController
 public class TradingItemController {
 
-    private final TradingItemService tradingItemService;
+    private final TradingItemServiceImpl tradingItemService;
 
     @Autowired
-    public TradingItemController(TradingItemService tradingItemService) {
+    public TradingItemController(TradingItemServiceImpl tradingItemService) {
         this.tradingItemService = tradingItemService;
     }
 

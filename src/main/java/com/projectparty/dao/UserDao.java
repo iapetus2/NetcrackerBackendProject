@@ -2,13 +2,13 @@ package com.projectparty.dao;
 
 import com.projectparty.entities.User;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 @Component
@@ -25,8 +25,8 @@ public class UserDao {
             session.save(user);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            logger.log(Level.SEVERE, "Exception: ", e);
+        }catch (RuntimeException e){
+            logger.error("User creating failure");
         }
 
     }
@@ -58,8 +58,8 @@ public class UserDao {
             session.update(user);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            throw new RuntimeException("Update failure");
+        }catch (RuntimeException e){
+            logger.error("TradingItem updating failure");
         }
 
         return true;
@@ -77,8 +77,8 @@ public class UserDao {
             session.delete(proxyUser);
             transaction.commit();
             session.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+        }catch (RuntimeException e){
+            logger.error("TradingItem deleting failure");
         }
 
         return true;

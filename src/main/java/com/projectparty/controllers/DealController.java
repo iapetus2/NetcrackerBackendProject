@@ -1,7 +1,7 @@
 package com.projectparty.controllers;
 
 import com.projectparty.entities.Deal;
-import com.projectparty.service.DealService;
+import com.projectparty.service.DealServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,10 @@ import java.util.List;
 @RestController
 public class DealController {
 
-    private final DealService dealService;
+    private final DealServiceImpl dealService;
 
     @Autowired
-    public DealController(DealService dealService) {
+    public DealController(DealServiceImpl dealService) {
         this.dealService = dealService;
     }
 

@@ -30,8 +30,11 @@ public class Deal {
     private long dealPrice;
 
     @NonNull
-    @ManyToOne
-    @Column(name = "tradingItemName")
-    private TradingItem dealItem;
+    @Column(name = "tradingItemId")
+    private int dealItemId;
+
+    @NonNull
+    @Column(name = "userId")
+    private int userId;
 
 }

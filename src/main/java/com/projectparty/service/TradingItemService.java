@@ -1,45 +1,18 @@
 package com.projectparty.service;
 
-import com.projectparty.dao.TradingItemDao;
 import com.projectparty.entities.TradingItem;
-import com.projectparty.entities.TradingItemType;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 
-@Service
-public class TradingItemService implements TradingItemServiceInterface {
+public interface TradingItemService {
 
-    private TradingItemDao itemsDao = new TradingItemDao();
+    void save(TradingItem tradingItem);
 
-    @Override
-    public void save(TradingItem tradingItem) {
-        itemsDao.save(tradingItem);
-    }
+    List<TradingItem> readAll();
 
-    @Override
-    public List<TradingItem> readAll() {
-        return itemsDao.readAll();
-    }
+    TradingItem read(int id);
 
-    @Override
-    public TradingItem read(int id) {
-        return itemsDao.read(id);
-    }
+    boolean update(TradingItem tradingItem, int id);
 
-    @Override
-    public boolean update(TradingItem tradingItem, int id) {
-        return itemsDao.update(tradingItem, id);
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return itemsDao.delete(id);
-    }
-
-
-
-
+    boolean delete(int id);
 
 }

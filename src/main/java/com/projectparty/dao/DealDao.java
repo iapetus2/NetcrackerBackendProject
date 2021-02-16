@@ -3,19 +3,16 @@ package com.projectparty.dao;
 import com.projectparty.entities.Deal;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 
 @Component
 public class DealDao {
-    Logger logger = Logger.getLogger(DealDao.class.getName());
+    private static final Logger logger = Logger.getLogger(DealDao.class.getName());
 
     public void save(Deal deal) {
         try {
@@ -27,8 +24,8 @@ public class DealDao {
             session.save(deal);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            logger.log(Level.SEVERE, "Exception: ", e);
+        }catch (RuntimeException e){
+            logger.error("Deal creating failure");
         }
 
     }
@@ -59,8 +56,8 @@ public class DealDao {
             session.update(deal);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            throw new RuntimeException("Update failure");
+        }catch (RuntimeException e){
+            logger.error("Deal updating failure");
         }
 
         return true;
@@ -78,8 +75,8 @@ public class DealDao {
             session.delete(proxyDeal);
             transaction.commit();
             session.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+        }catch (RuntimeException e){
+            logger.error("Deal deleting failure");
         }
 
         return true;
