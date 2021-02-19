@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = {"/api"})
 public class OrderController {
 
@@ -25,7 +26,7 @@ public class OrderController {
         orderService.save(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/orders/{id}")
     public ResponseEntity<Order> read(@PathVariable(name = "id") int id) {
         final Order order = orderService.read(id);
@@ -34,7 +35,7 @@ public class OrderController {
                 ? new ResponseEntity<>(order, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> readAll() {
         final List<Order> orders = orderService.readAll();
@@ -43,7 +44,7 @@ public class OrderController {
                 ? new ResponseEntity<>(orders, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+    @CrossOrigin(origins = "*")
     @PutMapping("/orders/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Order order) {
         final boolean updated = orderService.update(order, id);
@@ -52,10 +53,10 @@ public class OrderController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
-    @DeleteMapping("/orders/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
-        final boolean deleted = orderService.delete(id);
+    @CrossOrigin(origins = "*")
+    @DeleteMapping(value = "/orders/{orderId}")
+    public ResponseEntity<?> delete(@PathVariable(name = "orderId") int orderId) {
+        final boolean deleted = orderService.delete(orderId);
 
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)

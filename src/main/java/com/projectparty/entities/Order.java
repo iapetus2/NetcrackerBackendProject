@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Data
@@ -36,6 +38,10 @@ public class Order {
     @NonNull
     @Column(name = "creationDate")
     private Date orderDate;
+
+    @NonNull
+    @Column(name = "orderAmount")
+    private int orderAmount;
 
     @NonNull
     @Column(name = "userId")

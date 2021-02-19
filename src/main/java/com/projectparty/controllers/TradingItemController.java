@@ -11,6 +11,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 public class TradingItemController {
 
     private final TradingItemServiceImpl tradingItemService;
