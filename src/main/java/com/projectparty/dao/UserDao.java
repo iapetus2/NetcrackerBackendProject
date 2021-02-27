@@ -1,14 +1,11 @@
-package com.projectparty.dao;
-
-import com.projectparty.entities.User;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Component
@@ -25,8 +22,8 @@ public class UserDao {
             session.save(user);
             transaction.commit();
             session.close();
-        }catch (RuntimeException e){
-            logger.error("User creating failure");
+        }catch (Exception e){
+            logger.log(Level.SEVERE, "Exception: ", e);
         }
 
     }
@@ -48,22 +45,64 @@ public class UserDao {
     }
 
     public boolean update(User user, int id) {
-        try{
-            Session session = HibernateSessionFactoryUtil
-                    .getSessionFactory()
-                    .openSession();
-            session.load(User.class, id);
+        
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
             Transaction transaction = session
                     .beginTransaction();
-            session.update(user);
-            transaction.commit();
-            session.close();
-        }catch (RuntimeException e){
-            logger.error("TradingItem updating failure");
+            try {
+                session.load(User.class, id);
+                session.update(user);
+                transaction.commit();
+            } catch (final Exception e) {
+                logger.severe("Error: " + e.getMessage());
+                transaction.rollback();
+            }
+        } catch (Exception e){
+            throw new RuntimeException("Update failure");
         }
 
         return true;
     }
+
+    public boolean update(User user, int id, Session session) {
+        try{
+                session.load(User.class, id);
+                session.merge(user);
+        }catch (Exception e){
+            session.getTransaction().rollback();
+            throw new RuntimeException("Update failure");
+        }
+        return true;
+    }
+
+    public Session openSession(){
+        Session session;
+        try {
+            session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        } catch (Exception e){
+            try {
+                session = HibernateSessionFactoryUtil
+                        .getSessionFactory()
+                        .openSession();
+            } catch (Exception ex) {
+                throw new RuntimeException("Fail to open Session", ex);
+            }
+        }
+        return session;
+    }
+
+    public void commitTransaction(Session session, Transaction transaction){
+        try {
+            transaction.commit();
+            session.close();
+        }catch (Exception e){
+            session.getTransaction().rollback();
+            throw new RuntimeException("Fail to commit changes");
+        }
+    }
+
 
     public boolean delete(int id) {
         try{
@@ -77,10 +116,9 @@ public class UserDao {
             session.delete(proxyUser);
             transaction.commit();
             session.close();
-        }catch (RuntimeException e){
-            logger.error("TradingItem deleting failure");
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failure");
         }
-
         return true;
     }
 }
