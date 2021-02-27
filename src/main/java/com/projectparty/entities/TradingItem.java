@@ -1,14 +1,8 @@
 package com.projectparty.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -17,8 +11,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TradingItem {
+
     @Id
-    @Column(name = "id")
+    @NonNull
+    @Column(name = "tradingItemId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int itemId;
 
     @NonNull
@@ -29,9 +26,11 @@ public class TradingItem {
     private TradingItemType itemCategory;
 
     @Column(name = "price")
+    @NonNull
     private long itemPrice;
 
     @Column(name = "creationDate")
+    @Temporal(TemporalType.DATE)
     private Date itemDate;
 
 }
