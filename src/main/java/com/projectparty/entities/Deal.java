@@ -1,11 +1,6 @@
 package com.projectparty.entities;
 
-import com.projectparty.controllers.MessageController;
-import com.projectparty.graphs.GraphMessage;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,13 +11,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Deal {
-
     @Id
     @NonNull
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "dealId")
     private int dealId;
 
     @NonNull
+    @Temporal(TemporalType.DATE)
     @Column(name = "dealDate")
     private Date dealDate;
 
@@ -34,7 +30,34 @@ public class Deal {
     private int dealItemId;
 
     @NonNull
-    @Column(name = "userId")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User user;
 
+    @Column(name = "amount")
+    private int amount;
+
+    public int getDealItemId() {
+        return dealItemId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public Date getDealDate() {
+        return dealDate;
+    }
+
+    public int getDealId() {
+        return dealId;
+    }
+
+    public long getDealPrice() {
+        return dealPrice;
+    }
 }
