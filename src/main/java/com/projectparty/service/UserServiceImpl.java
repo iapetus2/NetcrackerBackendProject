@@ -2,17 +2,30 @@ package com.projectparty.service;
 
 import com.projectparty.dao.UserDao;
 import com.projectparty.entities.User;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService implements UserServiceInterface {
 
-    private UserDao usersDao = new UserDao();
+    private final UserDao usersDao;
+
+    @Autowired
+    public UserService(UserDao usersDao) {
+        this.usersDao = usersDao;
+    }
 
     @Override
     public void save(User user) {
+        user.setItems(new TreeMap<>());
+        user.setDeals(new ArrayList<>());
+        user.setOrders(new ArrayList<>());
         usersDao.save(user);
     }
 
@@ -36,8 +49,17 @@ public class UserServiceImpl implements UserService {
         return usersDao.delete(id);
     }
 
+    @Override
+    //add frozen cash functional
+    public boolean deal(User customer, User seller) {
+        Session session = usersDao.openSession();
+        Transaction transaction = session.beginTransaction();
 
+        usersDao.update(customer, customer.getUserId(),session);
+        usersDao.update(seller, seller.getUserId(),session);
 
+        usersDao.commitTransaction(session, transaction);
 
-
+        return true;
+    }
 }
