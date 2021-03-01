@@ -41,5 +41,4 @@ public class Order {
     @NonNull
     @Column(name = "userId")
     private int userId;
-
 }
