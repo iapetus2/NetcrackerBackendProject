@@ -48,7 +48,7 @@ public class UserDao {
     }
 
     public boolean update(User user, int id) {
-        
+
         try (Session session = HibernateSessionFactoryUtil
                 .getSessionFactory()
                 .openSession()) {

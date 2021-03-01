@@ -7,48 +7,35 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
+
 
 @Component
 public class OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDao.class.getName());
 
-    public void save(Order Order) {
-        try (var session = HibernateSessionFactoryUtil
-                .getSessionFactory()
-                .openSession()) {
+    public void save(Order order) {
+        try {
+            Session session = HibernateSessionFactoryUtil
+                    .getSessionFactory()
+                    .openSession();
             Transaction transaction = session
                     .beginTransaction();
-            try {
-                session.save(Order);
-                transaction.commit();
-            } catch (final Exception e) {
-                transaction.rollback();
-            }
-        } catch (Exception e){
-            logger.log(Level.SEVERE, "Exception: ", e);
+            session.save(order);
+            transaction.commit();
+            session.close();
+        }catch (RuntimeException e){
+            logger.error("Order creating failure");
         }
 
     }
 
     public List<Order> readAll() {
-        try(var session = HibernateSessionFactoryUtil
+        return HibernateSessionFactoryUtil
                 .getSessionFactory()
-                .openSession()) {
-            return session.createQuery("FROM Order", Order.class)
-                    .getResultList();
-        }
-    }
-
-    public List<Order> readAllItems(int id) {
-        try(var session = HibernateSessionFactoryUtil
-                .getSessionFactory()
-                .openSession()) {
-            return session.createQuery("FROM Order WHERE tradingItemId = :itemId", Order.class)
-                    .setParameter("itemId",id)
-                    .list();
-        }
+                .openSession()
+                .createQuery("FROM Order", Order.class)
+                .list();
     }
 
     public Order read(int id) {
@@ -58,7 +45,7 @@ public class OrderDao {
                 .get(Order.class, id);
     }
 
-    public boolean update(Order Order, int id) {
+    public boolean update(Order order, int id) {
         try{
             Session session = HibernateSessionFactoryUtil
                     .getSessionFactory()
@@ -66,11 +53,11 @@ public class OrderDao {
             session.load(Order.class, id);
             Transaction transaction = session
                     .beginTransaction();
-            session.update(Order);
+            session.update(order);
             transaction.commit();
             session.close();
-        }catch (Exception e){
-            throw new RuntimeException("Update failure");
+        }catch (RuntimeException e){
+            logger.error("Order updating failure");
         }
 
         return true;
@@ -88,8 +75,8 @@ public class OrderDao {
             session.delete(proxyOrder);
             transaction.commit();
             session.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+        }catch (RuntimeException e){
+            logger.error("Order deleting failure");
         }
 
         return true;
