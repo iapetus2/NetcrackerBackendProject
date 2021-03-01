@@ -1,5 +1,5 @@
 package com.projectparty.utils;
-import com.projectparty.config.HibernateConfig;
+
 import com.projectparty.entities.Deal;
 import com.projectparty.entities.Order;
 import com.projectparty.entities.TradingItem;

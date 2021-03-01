@@ -3,7 +3,7 @@ package com.projectparty.service;
 import com.projectparty.entities.User;
 import java.util.List;
 
-public interface UserServiceInterface {
+public interface UserService {
 
     void save(User user);
 
@@ -14,7 +14,4 @@ public interface UserServiceInterface {
     boolean update(User user, int id);
 
     boolean delete(int id);
-
-    boolean deal(User customer,User seller);
-
 }

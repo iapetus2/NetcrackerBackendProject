@@ -9,31 +9,31 @@ import java.util.List;
 @Service
 public class DealServiceImpl implements DealService {
 
-    private DealDao itemsDao = new DealDao();
+    private DealDao dealDao = new DealDao();
 
     @Override
     public void save(Deal deal) {
-        itemsDao.save(deal);
+        dealDao.save(deal);
     }
 
     @Override
     public List<Deal> readAll() {
-        return itemsDao.readAll();
+        return dealDao.readAll();
     }
 
     @Override
     public Deal read(int id) {
-        return itemsDao.read(id);
+        return dealDao.read(id);
     }
 
     @Override
     public boolean update(Deal deal, int id) {
-        return itemsDao.update(deal, id);
+        return dealDao.update(deal, id);
     }
 
     @Override
     public boolean delete(int id) {
-        return itemsDao.delete(id);
+        return dealDao.delete(id);
     }
 
 

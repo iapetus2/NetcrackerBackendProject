@@ -1,3 +1,6 @@
+package com.projectparty.dao;
+
+import com.projectparty.entities.User;
 import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
