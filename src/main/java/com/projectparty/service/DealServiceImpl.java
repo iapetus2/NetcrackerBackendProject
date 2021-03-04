@@ -2,6 +2,7 @@ package com.projectparty.service;
 
 import com.projectparty.dao.DealDao;
 import com.projectparty.entities.Deal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 @Service
 public class DealServiceImpl implements DealService {
 
-    private DealDao dealDao = new DealDao();
+    @Autowired
+    DealDao dealDao;
 
     @Override
     public void save(Deal deal) {

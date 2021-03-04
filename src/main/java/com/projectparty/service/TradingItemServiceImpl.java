@@ -3,6 +3,7 @@ package com.projectparty.service;
 import com.projectparty.dao.TradingItemDao;
 import com.projectparty.entities.TradingItem;
 import com.projectparty.entities.TradingItemType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -11,7 +12,8 @@ import java.util.List;
 @Service
 public class TradingItemServiceImpl implements TradingItemService {
 
-    private TradingItemDao itemsDao = new TradingItemDao();
+    @Autowired
+    TradingItemDao itemsDao;
 
     @Override
     public void save(TradingItem tradingItem) {

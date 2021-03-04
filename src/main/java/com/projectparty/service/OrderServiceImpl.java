@@ -2,6 +2,8 @@ package com.projectparty.service;
 
 import com.projectparty.dao.OrderDao;
 import com.projectparty.entities.Order;
+import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private OrderDao orderDao = new OrderDao();
+    @Autowired
+    OrderDao orderDao;
 
     @Override
     public void save(Order order) {

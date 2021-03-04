@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void save(User user);
+    boolean save(User user);
 
     List<User> readAll();
 

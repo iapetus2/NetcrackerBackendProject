@@ -47,6 +47,13 @@ public class UserDao {
                 .get(User.class, id);
     }
 
+    public User findByUsername(String name) {
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .get(User.class, name);
+    }
+
     public boolean update(User user, int id) {
 
         try (Session session = HibernateSessionFactoryUtil
