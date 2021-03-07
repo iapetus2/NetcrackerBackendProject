@@ -1,14 +1,15 @@
 package com.projectparty.entities;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "TradingItem")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class TradingItem {
 

@@ -1,10 +1,10 @@
 package com.projectparty.service;
 
 import com.projectparty.entities.Deal;
+
 import java.util.List;
 
 public interface DealService {
-
     void save(Deal deal);
 
     List<Deal> readAll();
@@ -14,5 +14,4 @@ public interface DealService {
     boolean update(Deal deal, int id);
 
     boolean delete(int id);
-
 }

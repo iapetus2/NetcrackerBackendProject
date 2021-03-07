@@ -1,6 +1,8 @@
 package com.projectparty.entities;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,13 +10,13 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "Deals")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Deal {
+
     @Id
     @NonNull
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "dealId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int dealId;
 
     @NonNull
@@ -36,28 +38,4 @@ public class Deal {
 
     @Column(name = "amount")
     private int amount;
-
-    public int getDealItemId() {
-        return dealItemId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public Date getDealDate() {
-        return dealDate;
-    }
-
-    public int getDealId() {
-        return dealId;
-    }
-
-    public long getDealPrice() {
-        return dealPrice;
-    }
 }

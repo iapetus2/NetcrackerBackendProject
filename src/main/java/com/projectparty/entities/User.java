@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -41,10 +42,20 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
-    @OneToMany
+    @Transient
+    private long frozenCash;
+
+    @Transient
+    private Map<Integer, Integer> frozenItems;
+
+    @ElementCollection
+    @MapKeyColumn(name = "tradingItemId")
+    private Map<Integer, Integer> items;
+
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Deal> deals;
 
     @Override

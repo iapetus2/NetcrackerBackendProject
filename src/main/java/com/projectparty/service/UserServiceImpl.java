@@ -1,20 +1,23 @@
 package com.projectparty.service;
 
 import com.projectparty.dao.UserDao;
-import com.projectparty.dao.RoleRepository;
-import com.projectparty.entities.User;
 import com.projectparty.entities.Role;
+import com.projectparty.entities.User;
 import com.projectparty.entities.UserRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
@@ -31,6 +34,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean save(User user) {
         User userFromDB = userDao.findByUsername(user.getUsername());
 
+        createNewUserCollections(user);
+
         if (userFromDB != null) {
             return false;
         }
@@ -38,6 +43,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
         return true;
+    }
+
+    private void createNewUserCollections(User user){
+        user.setItems(new TreeMap<>());
+        user.setDeals(new ArrayList<>());
+        user.setOrders(new ArrayList<>());
     }
 
     @Override
@@ -58,5 +69,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean delete(int id) {
         return userDao.delete(id);
+    }
+
+    @Override
+    //add frozen cash functional
+    public boolean deal(User customer, User seller) {
+        return userDao.update(customer, customer.getUserId()) &&
+                userDao.update(seller, seller.getUserId());
     }
 }

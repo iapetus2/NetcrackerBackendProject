@@ -1,82 +1,82 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.Order;
-import com.projectparty.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import org.apache.log4j.Logger;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
+@Transactional
 public class OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDao.class.getName());
 
+    private final SessionFactory sessionFactory;
+
+    @Autowired
+    public OrderDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public void save(Order order) {
         try {
-            Session session = HibernateSessionFactoryUtil
-                    .getSessionFactory()
-                    .openSession();
-            Transaction transaction = session
-                    .beginTransaction();
+            Session session = sessionFactory
+                .getCurrentSession();
             session.save(order);
-            transaction.commit();
-            session.close();
-        }catch (RuntimeException e){
-            logger.error("Order creating failure");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Exception: ", e);
         }
-
     }
 
     public List<Order> readAll() {
-        return HibernateSessionFactoryUtil
-                .getSessionFactory()
-                .openSession()
-                .createQuery("FROM Order", Order.class)
+        var session = sessionFactory
+                .getCurrentSession();
+        return session.createQuery("FROM Order", Order.class)
+                .list();
+    }
+
+    public List<Order> readAllItems(int id) {
+        var session = sessionFactory
+                .getCurrentSession();
+        return session.createQuery("FROM Order WHERE tradingItemId = :itemId", Order.class)
+                .setParameter("itemId", id)
                 .list();
     }
 
     public Order read(int id) {
-        return HibernateSessionFactoryUtil
-                .getSessionFactory()
-                .openSession()
-                .get(Order.class, id);
+        var session = sessionFactory
+                .getCurrentSession();
+        return session.get(Order.class, id);
+
     }
 
     public boolean update(Order order, int id) {
-        try{
-            Session session = HibernateSessionFactoryUtil
-                    .getSessionFactory()
-                    .openSession();
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
             session.load(Order.class, id);
-            Transaction transaction = session
-                    .beginTransaction();
             session.update(order);
-            transaction.commit();
-            session.close();
-        }catch (RuntimeException e){
-            logger.error("Order updating failure");
+        } catch (Exception e) {
+            throw new RuntimeException("Update failure");
         }
 
         return true;
     }
 
     public boolean delete(int id) {
-        try{
+        try {
             Order proxyOrder;
-            Session session = HibernateSessionFactoryUtil
-                    .getSessionFactory()
-                    .openSession();
+            var session = sessionFactory
+                    .getCurrentSession();
             proxyOrder = session.load(Order.class, id);
-            Transaction transaction = session
-                    .beginTransaction();
             session.delete(proxyOrder);
-            transaction.commit();
-            session.close();
-        }catch (RuntimeException e){
-            logger.error("Order deleting failure");
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failure");
         }
 
         return true;

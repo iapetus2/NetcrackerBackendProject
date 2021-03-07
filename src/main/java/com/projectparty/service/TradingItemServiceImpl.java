@@ -2,18 +2,22 @@ package com.projectparty.service;
 
 import com.projectparty.dao.TradingItemDao;
 import com.projectparty.entities.TradingItem;
-import com.projectparty.entities.TradingItemType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class TradingItemServiceImpl implements TradingItemService {
 
+    private final TradingItemDao itemsDao;
+
     @Autowired
-    TradingItemDao itemsDao;
+    public TradingItemServiceImpl(TradingItemDao itemsDao) {
+        this.itemsDao = itemsDao;
+    }
 
     @Override
     public void save(TradingItem tradingItem) {
@@ -22,7 +26,7 @@ public class TradingItemServiceImpl implements TradingItemService {
 
     @Override
     public List<TradingItem> readAll() {
-        return itemsDao.readAll();
+       return itemsDao.readAll();
     }
 
     @Override
@@ -39,9 +43,5 @@ public class TradingItemServiceImpl implements TradingItemService {
     public boolean delete(int id) {
         return itemsDao.delete(id);
     }
-
-
-
-
 
 }

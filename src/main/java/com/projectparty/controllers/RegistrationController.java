@@ -13,8 +13,12 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class RegistrationController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/api/auth/register")
     public String register(Model model) {
