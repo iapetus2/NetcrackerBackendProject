@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
                 filterOrderListByType(itemsDao.readAllItems(tradingItemId),
                         order.getOrderType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
 
-        if(!checkOrderFeasibility(orderList, order)){
+        if(!checkDealFeasibility(orderList, order)){
             return Collections.emptyList();
         }
 
@@ -113,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private boolean checkOrderFeasibility(List<Order> orderList, Order order){
+    private boolean checkDealFeasibility(List<Order> orderList, Order order){
         if(orderList.isEmpty()){
             return false;
         }
@@ -183,7 +183,6 @@ public class OrderServiceImpl implements OrderService {
         deal.setUser(order.getUser());
         deal.setDealPrice(orderPrice);
         deal.setAmount(order.getAmount());
-        deal.setDealItemId(order.getTradingItem().getItemId());
     }
 
     private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType,Order newOrder) {
