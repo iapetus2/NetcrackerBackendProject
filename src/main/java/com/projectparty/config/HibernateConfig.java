@@ -13,8 +13,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernateConfig {
 
-    //name was added to avoid Exception produced by RoleRepository
-    @Bean(name = "entityManagerFactory")
+    @Bean
     public LocalSessionFactoryBean sessionFactoryBean() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
@@ -35,9 +34,9 @@ public class HibernateConfig {
     @Bean
     public static DataSource dataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
-        dataSource.setURL("jdbc:sqlserver://127.0.0.1:1433;database=auctiondb");
-        dataSource.setUser("User");
-        dataSource.setPassword("admin");
+        dataSource.setURL("jdbc:sqlserver://127.0.0.1:51264;database=NetcrackerDB");
+        dataSource.setUser("Iskander");
+        dataSource.setPassword("Khafi");
         return dataSource;
     }
 

@@ -1,57 +1,71 @@
 package com.projectparty.config;
 
-import com.projectparty.service.UserServiceImpl;
+import com.projectparty.security.jwt.AuthEntryPointJwt;
+import com.projectparty.security.jwt.AuthTokenFilter;
+import com.projectparty.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        // securedEnabled = true,
+        // jsr250Enabled = true,
+        prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserServiceImpl userService;
+    UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf()
-                .disable()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/signup").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/room").hasRole("USER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**").permitAll()
-                //Все остальные страницы требуют аутентификации
-                .anyRequest().authenticated()
-                .and()
-                //Настройка для входа в систему
-                .formLogin()
-                .loginPage("/login")
-                //Перенарпавление на главную страницу после успешного входа
-                .defaultSuccessUrl("/")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()
-                .logoutSuccessUrl("/");
-    }
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/api/auth/signup").not().fullyAuthenticated()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/room").hasRole("USER")
+                .anyRequest().authenticated();
 
-    @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

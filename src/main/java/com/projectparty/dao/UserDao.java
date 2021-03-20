@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 @Component
 public class UserDao {
-
     Logger logger = Logger.getLogger(UserDao.class.getName());
 
     private final SessionFactory sessionFactory;
@@ -23,11 +22,24 @@ public class UserDao {
 
     public void save(User user) {
         try {
+            logger.log(Level.INFO, user.toString());
             var session = sessionFactory
                     .getCurrentSession();
             session.save(user);
         }catch (Exception e){
             logger.log(Level.SEVERE, "Exception: ", e);
+        }
+
+    }
+
+    public User findByUsername(String name) {
+        try {
+            Session session = sessionFactory
+                    .getCurrentSession();
+            return session.get(User.class, name);
+        } catch (Exception e){
+            logger.severe("Error: " + e.getMessage());
+            throw new RuntimeException("Can not read from database",e);
         }
     }
 
@@ -83,17 +95,4 @@ public class UserDao {
         }
         return true;
     }
-
-    public User findByUsername(String name) {
-        try {
-            Session session = sessionFactory
-                    .getCurrentSession();
-            return session.get(User.class, name);
-        } catch (Exception e){
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read from database",e);
-        }
-    }
-
-
 }

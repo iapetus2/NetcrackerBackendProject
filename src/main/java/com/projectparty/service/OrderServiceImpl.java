@@ -1,10 +1,7 @@
 package com.projectparty.service;
 
 import com.projectparty.dao.OrderDao;
-import com.projectparty.entities.Deal;
-import com.projectparty.entities.Order;
-import com.projectparty.entities.OrderType;
-import com.projectparty.entities.User;
+import com.projectparty.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,36 +14,41 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao itemsDao;
-    private final UserService userServiceImpl;
-    private final DealService dealService;
+  //  private final UserService userServiceImpl;
+    //private final DealService dealService;
 
     @Autowired
     public OrderServiceImpl(OrderDao itemsDao, UserService userServiceImpl, DealService dealService) {
         this.itemsDao = itemsDao;
-        this.userServiceImpl = userServiceImpl;
-        this.dealService = dealService;
+      //  this.userServiceImpl = userServiceImpl;
+       // this.dealService = dealService;
+    }
+
+//    @Override
+//    public void save(Order order) {
+//        order.setUser(userServiceImpl.read(order.getUser().getUserId()));
+//
+//        validateOrder(order);
+//        List<Order> strategyOrders = findMatchingOrders(order);
+//
+//        if (!strategyOrders.isEmpty()) {
+//            makeDeals(strategyOrders, order);
+//            if(order.getAmount() > 0){
+//                saveTransaction(order);
+//            }
+//        }
+//        else{
+//            saveTransaction(order);
+//        }
+//    }
+
+    public void saveTransaction(Order order){
+        itemsDao.save(order);
     }
 
     @Override
     public void save(Order order) {
-        order.setUser(userServiceImpl.read(order.getUser().getUserId()));
 
-        validateOrder(order);
-        List<Order> strategyOrders = findMatchingOrders(order);
-
-        if (!strategyOrders.isEmpty()) {
-            makeDeals(strategyOrders, order);
-            if(order.getAmount() > 0){
-                saveTransaction(order);
-            }
-        }
-        else{
-            saveTransaction(order);
-        }
-    }
-
-    public void saveTransaction(Order order){
-        itemsDao.save(order);
     }
 
     @Override
@@ -136,54 +138,54 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //this method needs to be supplemented
-    private void makeDeals(List<Order> strategyOrders, Order order){
-        User partner;
-        User user = order.getUser();
-        long orderPrice;
-
-        for(Order currentOrder : strategyOrders){
-            orderPrice = currentOrder.getOrderPrice();
-            partner = userServiceImpl.read(currentOrder.getUser().getUserId());
-            order.setAmount(Math.max(order.getAmount() - currentOrder.getAmount(), 0));
-
-            Deal deal = new Deal();
-            this.setNewDealParameters(deal, currentOrder, orderPrice);
-
-            setCustomerOrSeller(user, order, orderPrice, currentOrder.getAmount(), deal);
-            setCustomerOrSeller(partner,currentOrder, orderPrice,currentOrder.getAmount(),deal);
-
-            userServiceImpl.deal(user, partner);
-            dealService.save(deal);
-
-            if(order.getAmount() >= 0){
-                itemsDao.delete(currentOrder.getOrderId());
-            }
-        }
-    }
-
-    private void setCustomerOrSeller(User user, Order order, long orderPrice, int amount, Deal deal) {
-
-        final int tradingItemId = order.getTradingItem().getItemId();
-
-        if(order.getOrderType() == OrderType.BUY) {
-            user.setCash(user.getCash() - orderPrice * amount);
-            user.getItems()
-                    .replace(tradingItemId, user.getItems().get(tradingItemId) + amount);
-        }
-        else{
-            user.setCash(user.getCash() + orderPrice * amount);
-            user.getItems()
-                    .replace(tradingItemId, user.getItems().get(tradingItemId) - amount);
-        }
-        user.getDeals().add(deal);
-    }
-
-    private void setNewDealParameters(Deal deal, Order order, long orderPrice){
-        deal.setDealDate(new Date());
-        deal.setUser(order.getUser());
-        deal.setDealPrice(orderPrice);
-        deal.setAmount(order.getAmount());
-    }
+//    private void makeDeals(List<Order> strategyOrders, Order order){
+//        UserDetails partner;
+//        UserDetails user = order.getUser();
+//        long orderPrice;
+//
+//        for(Order currentOrder : strategyOrders){
+//            orderPrice = currentOrder.getOrderPrice();
+//            partner = userServiceImpl.read(currentOrder.getUser().getUserId());
+//            order.setAmount(Math.max(order.getAmount() - currentOrder.getAmount(), 0));
+//
+//            Deal deal = new Deal();
+//            this.setNewDealParameters(deal, currentOrder, orderPrice);
+//
+//            setCustomerOrSeller(user, order, orderPrice, currentOrder.getAmount(), deal);
+//            setCustomerOrSeller(partner,currentOrder, orderPrice,currentOrder.getAmount(),deal);
+//
+//            userServiceImpl.deal(user, partner);
+//            dealService.save(deal);
+//
+//            if(order.getAmount() >= 0){
+//                itemsDao.delete(currentOrder.getOrderId());
+//            }
+//        }
+//    }
+//
+//    private void setCustomerOrSeller(User user, Order order, long orderPrice, int amount, Deal deal) {
+//
+//        final int tradingItemId = order.getTradingItem().getItemId();
+//
+//        if(order.getOrderType() == OrderType.BUY) {
+//            user.setCash(user.getCash() - orderPrice * amount);
+//            user.getItems()
+//                    .replace(tradingItemId, user.getItems().get(tradingItemId) + amount);
+//        }
+//        else{
+//            user.setCash(user.getCash() + orderPrice * amount);
+//            user.getItems()
+//                    .replace(tradingItemId, user.getItems().get(tradingItemId) - amount);
+//        }
+//        user.getDeals().add(deal);
+//    }
+//
+//    private void setNewDealParameters(Deal deal, Order order, long orderPrice){
+//        deal.setDealDate(new Date());
+//        deal.setUser(order.getUser());
+//        deal.setDealPrice(orderPrice);
+//        deal.setAmount(order.getAmount());
+//    }
 
     private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType,Order newOrder) {
         Comparator<Order> orderComparator = Comparator.comparing(Order::getOrderPrice);
