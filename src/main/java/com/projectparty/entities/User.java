@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -32,6 +30,7 @@ public class User {
     @NotBlank
     private String password;
 
+    @JsonIgnore
     private UserRoleEnum role;
 
     public User(String username, String email, String password) {
