@@ -3,6 +3,8 @@ package com.projectparty.dao;
 import com.projectparty.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.logging.Logger;
 
 
 @Component
+@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
 public class UserDao {
     Logger logger = Logger.getLogger(UserDao.class.getName());
 
