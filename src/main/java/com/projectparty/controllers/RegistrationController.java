@@ -15,7 +15,7 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("api/auth/signup")
+    @PostMapping("/api/auth/signup")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
