@@ -15,6 +15,9 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
+//    @Autowired
+//    private UserDetailsDao userDetailsDao;
+
     @PostMapping("/api/auth/signup")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         userService.save(user);

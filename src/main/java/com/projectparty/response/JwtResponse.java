@@ -2,8 +2,6 @@ package com.projectparty.response;
 
 import com.projectparty.entities.UserRoleEnum;
 import lombok.Data;
-
-import java.util.List;
 @Data
 public class JwtResponse {
 	private String token;

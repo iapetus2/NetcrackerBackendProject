@@ -2,6 +2,7 @@ package com.projectparty.controllers;
 
 import com.projectparty.dao.RoleDao;
 import com.projectparty.dao.UserDao;
+import com.projectparty.entities.User;
 import com.projectparty.requests.LoginRequest;
 import com.projectparty.response.JwtResponse;
 import com.projectparty.security.jwt.JwtUtils;
@@ -29,10 +30,10 @@ public class LoginController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserDao userRepository;
+    UserDao userDao;
 
     @Autowired
-    RoleDao roleRepository;
+    RoleDao roleDao;
 
     @Autowired
     PasswordEncoder encoder;
@@ -48,14 +49,13 @@ public class LoginController {
         logger.log(Level.INFO, authentication.toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getRole()));
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole()));
     }
 }
 

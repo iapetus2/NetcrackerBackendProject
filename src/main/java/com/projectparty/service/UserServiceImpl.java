@@ -3,14 +3,10 @@ package com.projectparty.service;
 import com.projectparty.dao.UserDao;
 import com.projectparty.entities.User;
 import com.projectparty.entities.UserRoleEnum;
-import com.projectparty.security.jwt.JwtUtils;
+import com.projectparty.security.service.UserDetailsServiceImpl;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +23,18 @@ public class UserServiceImpl implements UserService{
     UserDao userDao;
 
     @Autowired
-    PasswordEncoder encoder;
+    UserDetailsServiceImpl userDetailsService;
+
+//    @Autowired
+//    PasswordEncoder encoder;
 
     @Override
     public boolean save(User user) {
-//        if(userDao.findByUsername(user.getUsername()) != null){
-//            return false;
-//        }
+        if(userDetailsService.loadUserByUsername(user.getUsername()) != null){
+            return false;
+        }
         user.setRole(UserRoleEnum.ROLE_USER);
-        user.setPassword(encoder.encode(user.getPassword()));
+        //user.setPassword(encoder.encode(user.getPassword()));
         logger.log(Level.INFO, user.toString());
         userDao.save(user);
         return true;

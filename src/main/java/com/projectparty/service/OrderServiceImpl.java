@@ -71,32 +71,32 @@ public class OrderServiceImpl implements OrderService {
         return itemsDao.update(order, id);
     }
 
-    private List<Order> findMatchingOrders(Order order) {
-        final int tradingItemId = order.getTradingItem().getItemId();
-
-        List<Order> orderList =
-                filterOrderListByType(itemsDao.readAllItems(tradingItemId),
-                        order.getOrderType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
-
-        if(!checkDealFeasibility(orderList, order)){
-            return Collections.emptyList();
-        }
-
-        order.getUser().getItems().putIfAbsent(tradingItemId, 0);
-
-        List<Order> strategyOrders = new ArrayList<>();
-        int amount = order.getAmount();
-
-        for(Order runningOrder : orderList){
-            if(!checkForMatchingEnd(runningOrder, order) || amount <= 0){
-                break;
-            }
-            strategyOrders.add(runningOrder);
-            amount = amount - runningOrder.getAmount();
-        }
-
-        return strategyOrders;
-    }
+//    private List<Order> findMatchingOrders(Order order) {
+//        final int tradingItemId = order.getTradingItem().getItemId();
+//
+//        List<Order> orderList =
+//                filterOrderListByType(itemsDao.readAllItems(tradingItemId),
+//                        order.getOrderType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
+//
+//        if(!checkDealFeasibility(orderList, order)){
+//            return Collections.emptyList();
+//        }
+//
+//        order.getUser().getItems().putIfAbsent(tradingItemId, 0);
+//
+//        List<Order> strategyOrders = new ArrayList<>();
+//        int amount = order.getAmount();
+//
+//        for(Order runningOrder : orderList){
+//            if(!checkForMatchingEnd(runningOrder, order) || amount <= 0){
+//                break;
+//            }
+//            strategyOrders.add(runningOrder);
+//            amount = amount - runningOrder.getAmount();
+//        }
+//
+//        return strategyOrders;
+//    }
 
     private void validateOrder(Order order){
         if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
@@ -187,18 +187,18 @@ public class OrderServiceImpl implements OrderService {
 //        deal.setAmount(order.getAmount());
 //    }
 
-    private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType,Order newOrder) {
-        Comparator<Order> orderComparator = Comparator.comparing(Order::getOrderPrice);
-
-        if (orderType == OrderType.BUY) {
-            orderComparator = orderComparator.reversed();
-        }
-
-        return orderList.stream()
-                .filter(order -> (order.getOrderType() == orderType) && (order.getUser().getUserId() != newOrder.getUser().getUserId()))
-                .sorted(orderComparator)
-                .collect(Collectors.toList());
-    }
+//    private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType,Order newOrder) {
+//        Comparator<Order> orderComparator = Comparator.comparing(Order::getOrderPrice);
+//
+//        if (orderType == OrderType.BUY) {
+//            orderComparator = orderComparator.reversed();
+//        }
+//
+//        return orderList.stream()
+//                .filter(order -> (order.getOrderType() == orderType) && (order.getUser().getUserId() != newOrder.getUser().getUserId()))
+//                .sorted(orderComparator)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public boolean delete(int id) {
