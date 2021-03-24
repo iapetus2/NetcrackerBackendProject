@@ -1,32 +1,36 @@
 package com.projectparty.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "User_details")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetails {
 
     @Id
-    @JsonIgnore
-    @Column(name = "id")
+    @Column(name = "user_id")
     private int userId;
 
+    @OneToOne
+    @JoinColumn(name="user_id")
+    User user;
+
+    @Nullable
+    @Column
     private long cash;
 
+    @Nullable
     @Transient
     private long frozenCash;
 

@@ -1,12 +1,15 @@
 package com.projectparty.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "Users")
@@ -32,6 +35,11 @@ public class User {
 
     @JsonIgnore
     private UserRoleEnum role;
+
+    @Nullable
+    @OneToOne (cascade=CascadeType.ALL)
+    @JoinColumn (name="id")
+    private UserDetails userDetails;
 
     public User(String username, String email, String password) {
         this.username = username;

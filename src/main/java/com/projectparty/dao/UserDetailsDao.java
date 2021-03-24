@@ -1,6 +1,5 @@
 package com.projectparty.dao;
 
-import com.projectparty.entities.User;
 import com.projectparty.entities.UserDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,7 +7,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Query;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,83 +14,70 @@ import java.util.logging.Logger;
 
 @Component
 @EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
-public class UserDao {
-    Logger logger = Logger.getLogger(UserDao.class.getName());
+public class UserDetailsDao {
+    Logger logger = Logger.getLogger(UserDetailsDao.class.getName());
 
     private final SessionFactory sessionFactory;
 
-    public UserDao(SessionFactory sessionFactory) {
+    public UserDetailsDao(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(User user) {
+    public void save(UserDetails userDetails) {
         try {
-            logger.log(Level.INFO, user.toString());
+            logger.log(Level.INFO, userDetails.toString());
             var session = sessionFactory
                     .getCurrentSession();
-            session.save(user);
-            UserDetails userDetails = new UserDetails();
-            userDetails.setUserId(user.getUserId());
-            userDetails.setCash(10000);
             session.save(userDetails);
-        } catch (Exception e) {
+        }catch (Exception e){
             logger.log(Level.SEVERE, "Exception: ", e);
         }
 
     }
 
-    public User findByUsername(String name) {
+    public UserDetails findByUsername(String name) {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            Query query =
-                    session.createQuery(
-                            "SELECT count(*)" + "FROM User WHERE username = :name", Long.class)
-                            .setParameter("name", name);
-            logger.log(Level.INFO, query.getSingleResult().toString());
-            if (query.getSingleResult().equals(0))
-                return session.createQuery("FROM User WHERE username = :name", User.class)
-                        .setParameter("name", name)
-                        .getSingleResult();
-            else return null;
-
-        } catch (Exception e) {
+            return session.get(UserDetails.class, name);
+        } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can't read from database", e);
+            throw new RuntimeException("Can not read from database",e);
         }
     }
 
 
-    public List<User> readAll() {
+    public List<UserDetails> readAll() {
         try {
             var session = sessionFactory
                     .getCurrentSession();
-            return session.createQuery("FROM User", User.class)
+            return session.createQuery("FROM UserDetails", UserDetails.class)
                     .list();
-        } catch (Exception e) {
+        }
+        catch (Exception e){
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can not read database");
         }
     }
 
-    public User read(int id) {
+    public UserDetails read(int id) {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            return session.get(User.class, id);
-        } catch (Exception e) {
+            return session.get(UserDetails.class, id);
+        } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read from database", e);
+            throw new RuntimeException("Can not read from database",e);
         }
     }
 
-    public boolean update(User user, int id) {
+    public boolean update(UserDetails userDetails, int id) {
         try {
             var session = sessionFactory
                     .getCurrentSession();
-            session.load(User.class, id);
-            session.update(user);
-        } catch (Exception e) {
+            session.load(UserDetails.class, id);
+            session.update(userDetails);
+        } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Update failure");
         }
@@ -102,10 +87,10 @@ public class UserDao {
 
     public boolean delete(int id) {
         try {
-            User proxyUser;
+            UserDetails proxyUser;
             var session = sessionFactory
                     .getCurrentSession();
-            proxyUser = session.load(User.class, id);
+            proxyUser = session.load(UserDetails.class, id);
             session.delete(proxyUser);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
@@ -114,3 +99,4 @@ public class UserDao {
         return true;
     }
 }
+
