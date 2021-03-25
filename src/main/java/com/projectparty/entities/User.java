@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "Users")
@@ -39,7 +37,7 @@ public class User {
     @Nullable
     @OneToOne (cascade=CascadeType.ALL)
     @JoinColumn (name="id")
-    private UserDetails userDetails;
+    private UserData userData;
 
     public User(String username, String email, String password) {
         this.username = username;

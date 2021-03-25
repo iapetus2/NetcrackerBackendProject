@@ -4,6 +4,7 @@ import com.projectparty.entities.UserRoleEnum;
 import lombok.Data;
 @Data
 public class JwtResponse {
+
 	private String token;
 	private String type = "Bearer";
 	private int id;

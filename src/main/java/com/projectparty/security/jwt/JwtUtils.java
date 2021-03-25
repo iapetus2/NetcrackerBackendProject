@@ -3,6 +3,7 @@ package com.projectparty.security.jwt;
 import java.util.Date;
 
 import com.projectparty.entities.User;
+import com.projectparty.security.service.UserDetailsServiceImpl;
 import com.projectparty.service.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication) {
 
-        User userPrincipal = (User) authentication.getPrincipal();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))

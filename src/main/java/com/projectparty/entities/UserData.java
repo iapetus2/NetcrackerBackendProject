@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDetails {
+public class UserData {
 
     @Id
     @Column(name = "user_id")
@@ -24,7 +24,7 @@ public class UserDetails {
 
     @OneToOne
     @JoinColumn(name="user_id")
-    User user;
+    private User user;
 
     @Nullable
     @Column

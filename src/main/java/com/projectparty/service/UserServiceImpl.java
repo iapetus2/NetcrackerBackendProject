@@ -25,16 +25,13 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-//    @Autowired
-//    PasswordEncoder encoder;
+    @Autowired
+    PasswordEncoder encoder;
 
     @Override
     public boolean save(User user) {
-        if(userDetailsService.loadUserByUsername(user.getUsername()) != null){
-            return false;
-        }
+
         user.setRole(UserRoleEnum.ROLE_USER);
-        //user.setPassword(encoder.encode(user.getPassword()));
         logger.log(Level.INFO, user.toString());
         userDao.save(user);
         return true;

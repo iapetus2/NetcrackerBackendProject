@@ -41,7 +41,7 @@ public class Order {
     @NonNull
     @ManyToOne
     @JoinColumn(nullable = false)
-    private UserDetails user;
+    private UserData user;
 
     @NonNull
     @Column(name = "amount")

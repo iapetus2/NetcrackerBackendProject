@@ -1,6 +1,6 @@
 package com.projectparty.dao;
 
-import com.projectparty.entities.UserDetails;
+import com.projectparty.entities.UserData;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,32 +14,32 @@ import java.util.logging.Logger;
 
 @Component
 @EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
-public class UserDetailsDao {
-    Logger logger = Logger.getLogger(UserDetailsDao.class.getName());
+public class UserDataDao {
+    Logger logger = Logger.getLogger(UserDataDao.class.getName());
 
     private final SessionFactory sessionFactory;
 
-    public UserDetailsDao(SessionFactory sessionFactory){
+    public UserDataDao(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(UserDetails userDetails) {
+    public void save(UserData userData) {
         try {
-            logger.log(Level.INFO, userDetails.toString());
+            logger.log(Level.INFO, userData.toString());
             var session = sessionFactory
                     .getCurrentSession();
-            session.save(userDetails);
+            session.save(userData);
         }catch (Exception e){
             logger.log(Level.SEVERE, "Exception: ", e);
         }
 
     }
 
-    public UserDetails findByUsername(String name) {
+    public UserData findByUsername(String name) {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            return session.get(UserDetails.class, name);
+            return session.get(UserData.class, name);
         } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can not read from database",e);
@@ -47,11 +47,11 @@ public class UserDetailsDao {
     }
 
 
-    public List<UserDetails> readAll() {
+    public List<UserData> readAll() {
         try {
             var session = sessionFactory
                     .getCurrentSession();
-            return session.createQuery("FROM UserDetails", UserDetails.class)
+            return session.createQuery("FROM UserData", UserData.class)
                     .list();
         }
         catch (Exception e){
@@ -60,23 +60,23 @@ public class UserDetailsDao {
         }
     }
 
-    public UserDetails read(int id) {
+    public UserData read(int id) {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            return session.get(UserDetails.class, id);
+            return session.get(UserData.class, id);
         } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can not read from database",e);
         }
     }
 
-    public boolean update(UserDetails userDetails, int id) {
+    public boolean update(UserData userData, int id) {
         try {
             var session = sessionFactory
                     .getCurrentSession();
-            session.load(UserDetails.class, id);
-            session.update(userDetails);
+            session.load(UserData.class, id);
+            session.update(userData);
         } catch (Exception e){
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Update failure");
@@ -87,10 +87,10 @@ public class UserDetailsDao {
 
     public boolean delete(int id) {
         try {
-            UserDetails proxyUser;
+            UserData proxyUser;
             var session = sessionFactory
                     .getCurrentSession();
-            proxyUser = session.load(UserDetails.class, id);
+            proxyUser = session.load(UserData.class, id);
             session.delete(proxyUser);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());

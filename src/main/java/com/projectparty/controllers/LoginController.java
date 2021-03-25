@@ -8,6 +8,7 @@ import com.projectparty.response.JwtResponse;
 import com.projectparty.security.jwt.JwtUtils;
 import com.projectparty.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,19 +44,25 @@ public class LoginController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
         logger.log(Level.INFO, loginRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        logger.log(Level.INFO, authentication.toString());
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        User user = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                user.getUserId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole()));
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        return ResponseEntity.ok(new JwtResponse(
+                jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getRole()));
+
     }
 }
 

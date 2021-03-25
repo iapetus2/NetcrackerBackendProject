@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public class UserDetailsImpl {
+public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     private int id;
@@ -37,6 +37,11 @@ public class UserDetailsImpl {
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole());
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     public boolean isAccountNonExpired() {

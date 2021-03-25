@@ -1,7 +1,7 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.User;
-import com.projectparty.entities.UserDetails;
+import com.projectparty.entities.UserData;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,10 +31,10 @@ public class UserDao {
             var session = sessionFactory
                     .getCurrentSession();
             session.save(user);
-            UserDetails userDetails = new UserDetails();
-            userDetails.setUserId(user.getUserId());
-            userDetails.setCash(10000);
-            session.save(userDetails);
+            UserData userData = new UserData();
+            userData.setUserId(user.getUserId());
+            userData.setCash(10000);
+            session.save(userData);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Exception: ", e);
         }
