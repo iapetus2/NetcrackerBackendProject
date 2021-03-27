@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
@@ -41,9 +41,9 @@ public class LoginController {
 
     @Autowired
     JwtUtils jwtUtils;
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
         logger.log(Level.INFO, loginRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
