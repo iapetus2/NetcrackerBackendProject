@@ -47,19 +47,18 @@ public class UserDao {
                     .getCurrentSession();
             Query query =
                     session.createQuery(
-                            "SELECT count(*)" + "FROM User WHERE username = :name", Long.class)
+                            "SELECT id FROM User WHERE username = :name")
                             .setParameter("name", name);
-            logger.log(Level.INFO, query.getSingleResult().toString());
-            if (query.getSingleResult().equals(0))
-                return session.createQuery("FROM User WHERE username = :name", User.class)
-                        .setParameter("name", name)
-                        .getSingleResult();
-            else return null;
+            int id = (int) query.getSingleResult();
 
+            User user = this.read(id);
+            logger.log(Level.INFO, user.toString());
+            return user;
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can't read from database", e);
         }
+
     }
 
 

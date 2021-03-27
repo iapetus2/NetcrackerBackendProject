@@ -22,9 +22,9 @@ public class UserData {
     @Column(name = "user_id")
     private int userId;
 
-    @OneToOne
-    @JoinColumn(name="user_id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name="user_id")
+//    private User user;
 
     @Nullable
     @Column
@@ -34,17 +34,17 @@ public class UserData {
     @Transient
     private long frozenCash;
 
-    @Transient
-    private Map<Integer, Integer> frozenItems;
+//    @Transient
+//    private Map<Integer, Integer> frozenItems;
 
-    @ElementCollection
-    @MapKeyColumn(name = "tradingItemId")
-    private Map<Integer, Integer> items;
+//    @ElementCollection
+//    @MapKeyColumn(name = "tradingItemId")
+//    private Map<Integer, Integer> items;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
-
-    @OneToMany(mappedBy = "user")
-    private List<Order> deals;
+//    @OneToMany(mappedBy = "user")
+//    private List<Order> orders;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Order> deals;
 
 }
