@@ -2,16 +2,19 @@ package com.projectparty.service;
 
 import com.projectparty.dao.UserDao;
 import com.projectparty.entities.User;
+import com.projectparty.entities.UserData;
 import com.projectparty.entities.UserRoleEnum;
 import com.projectparty.security.service.UserDetailsServiceImpl;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 @Transactional
@@ -19,29 +22,26 @@ public class UserServiceImpl implements UserService{
 
     public static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 
-    @Autowired
     UserDao userDao;
 
-    @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    public UserServiceImpl(UserDao userDao, UserDetailsServiceImpl userDetailsService, PasswordEncoder encoder) {
+        this.userDao = userDao;
+        this.userDetailsService = userDetailsService;
+        this.encoder = encoder;
+    }
 
     @Override
     public boolean save(User user) {
-
         user.setRole(UserRoleEnum.ROLE_USER);
-        logger.log(Level.INFO, user.toString());
+        logger.log(Level.SEVERE, user.toString());
         userDao.save(user);
         return true;
     }
-
-//    private void createNewUserCollections(UserDetails user){
-//        user.set(new TreeMap<>());
-//        user.setDeals(new ArrayList<>());
-//        user.setOrders(new ArrayList<>());
-//    }
 
     @Override
     public List<User> readAll() {

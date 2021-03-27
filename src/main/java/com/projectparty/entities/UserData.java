@@ -1,11 +1,9 @@
 package com.projectparty.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,29 +20,22 @@ public class UserData {
     @Column(name = "user_id")
     private int userId;
 
-//    @OneToOne
-//    @JoinColumn(name="user_id")
-//    private User user;
-
     @Nullable
-    @Column
+    @Column(name = "cash")
     private long cash;
 
-    @Nullable
-    @Transient
-    private long frozenCash;
+    @OneToOne(mappedBy = "userData")
+    @JoinColumn
+    private User user;
 
-//    @Transient
-//    private Map<Integer, Integer> frozenItems;
+    @ElementCollection
+    @MapKeyColumn(name = "tradingItemId")
+    private Map<Integer, Integer> items;
 
-//    @ElementCollection
-//    @MapKeyColumn(name = "tradingItemId")
-//    private Map<Integer, Integer> items;
+    @OneToMany()
+    private List<Order> orders;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> orders;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> deals;
+    @OneToMany()
+    private List<Deal> deals;
 
 }

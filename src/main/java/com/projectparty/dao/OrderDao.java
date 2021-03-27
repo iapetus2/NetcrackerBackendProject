@@ -40,7 +40,7 @@ public class OrderDao {
                 .list();
     }
 
-    public List<Order> readAllItems(int id) {
+    public List<Order> readAllItemsById(int id) {
         var session = sessionFactory
                 .getCurrentSession();
         return session.createQuery("FROM Order WHERE tradingItemId = :itemId", Order.class)

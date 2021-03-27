@@ -1,4 +1,4 @@
-package com.projectparty.graphs;
+package com.projectparty.messages;
 
 import com.projectparty.entities.Deal;
 

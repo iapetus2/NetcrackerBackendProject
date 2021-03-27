@@ -1,6 +1,6 @@
 package com.projectparty.controllers;
 
-import com.projectparty.graphs.GraphMessage;
+import com.projectparty.messages.GraphMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 

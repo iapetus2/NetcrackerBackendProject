@@ -34,16 +34,13 @@ public class User {
     @JsonIgnore
     private UserRoleEnum role;
 
-//    @Nullable
-//    @OneToOne (cascade=CascadeType.ALL)
-//    @JoinColumn (name="id")
-//    private UserData userData;
+    @OneToOne
+    private UserData userData;
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
-
 
 }

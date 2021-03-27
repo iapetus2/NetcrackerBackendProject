@@ -1,6 +1,7 @@
 package com.projectparty.service;
 
 import com.projectparty.entities.Order;
+import com.projectparty.messages.OrderMessage;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface OrderService {
 
     List<Order> readAll();
 
-    List<Order> readAllItems(int itemId);
+    List<OrderMessage> readAllItemsById(int itemId);
 
     Order read(int id);
 

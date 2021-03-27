@@ -32,7 +32,7 @@ public class UserDao {
                     .getCurrentSession();
             session.save(user);
             UserData userData = new UserData();
-            userData.setUserId(user.getUserId());
+         //   userData.setUserId(user.getUserId());
             userData.setCash(10000);
             session.save(userData);
         } catch (Exception e) {

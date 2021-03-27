@@ -1,5 +1,5 @@
 package com.projectparty.config;
-import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -33,10 +33,11 @@ public class HibernateConfig {
 
     @Bean
     public static DataSource dataSource() {
-        SQLServerDataSource dataSource = new SQLServerDataSource();
-        dataSource.setURL("jdbc:sqlserver://127.0.0.1:51264;database=NetcrackerDB");
-        dataSource.setUser("Iskander");
-        dataSource.setPassword("Khafi");
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:sqlserver://127.0.0.1:1433;database=auctiondb");
+        dataSource.setUsername("User");
+        dataSource.setPassword("admin");
+        dataSource.setMaximumPoolSize(20);
         return dataSource;
     }
 

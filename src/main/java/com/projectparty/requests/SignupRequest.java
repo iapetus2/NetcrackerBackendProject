@@ -3,7 +3,6 @@ package com.projectparty.requests;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import java.util.Set;
 
 @Data
 public class SignupRequest {

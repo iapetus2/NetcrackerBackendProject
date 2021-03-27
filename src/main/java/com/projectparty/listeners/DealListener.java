@@ -3,7 +3,7 @@ package com.projectparty.listeners;
 import com.projectparty.controllers.MessageController;
 import com.projectparty.entities.Deal;
 import com.projectparty.entities.TradingItem;
-import com.projectparty.graphs.GraphMessage;
+import com.projectparty.messages.GraphMessage;
 import com.projectparty.service.TradingItemServiceImpl;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;

@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,11 +30,18 @@ public class UserDataDao {
             logger.log(Level.INFO, userData.toString());
             var session = sessionFactory
                     .getCurrentSession();
+            createNewUserCollections(userData);
             session.save(userData);
         }catch (Exception e){
             logger.log(Level.SEVERE, "Exception: ", e);
         }
 
+    }
+
+    private void createNewUserCollections(UserData userData){
+        userData.setItems(new TreeMap<>());
+        userData.setDeals(new ArrayList<>());
+        userData.setOrders(new ArrayList<>());
     }
 
     public UserData findByUsername(String name) {
@@ -56,7 +65,7 @@ public class UserDataDao {
         }
         catch (Exception e){
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read database");
+            throw new RuntimeException("Can not read database",e);
         }
     }
 
