@@ -98,22 +98,22 @@ public class OrderServiceImpl implements OrderService {
 //        return strategyOrders;
 //    }
 
-    private void validateOrder(Order order){
-        if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
-            throw new RuntimeException("Both price and amount must be positive");
-        }
-
-        final int tradingItemId = order.getTradingItem().getItemId();
-        final int amountUserOwns = order.getUser().getItems().getOrDefault(tradingItemId, 0);
-
-        if (order.getOrderType() == OrderType.SELL && amountUserOwns < order.getAmount()) {
-            throw new RuntimeException("Client doesn't have enough items to trade");
-        }
-
-        if (order.getUser().getCash() < order.getOrderPrice() * order.getAmount()) {
-            throw new RuntimeException("Insufficient funds");
-        }
-    }
+//    private void validateOrder(Order order){
+//        if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
+//            throw new RuntimeException("Both price and amount must be positive");
+//        }
+//
+//        final int tradingItemId = order.getTradingItem().getItemId();
+//        final int amountUserOwns = order.getUser().getItems().getOrDefault(tradingItemId, 0);
+//
+//        if (order.getOrderType() == OrderType.SELL && amountUserOwns < order.getAmount()) {
+//            throw new RuntimeException("Client doesn't have enough items to trade");
+//        }
+//
+//        if (order.getUser().getCash() < order.getOrderPrice() * order.getAmount()) {
+//            throw new RuntimeException("Insufficient funds");
+//        }
+//    }
 
     private boolean checkDealFeasibility(List<Order> orderList, Order order){
         if(orderList.isEmpty()){

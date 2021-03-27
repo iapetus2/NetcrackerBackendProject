@@ -19,8 +19,8 @@ public class JwtUtils {
     @Value("kuku")
     private String jwtSecret;
 
-    @Value("86400000")
-    private int jwtExpirationMs;
+    //@Value("86400000")
+//    private int jwtExpirationMs = 900000;
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -29,7 +29,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .setExpiration(new Date(System.currentTimeMillis() + 9000000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
