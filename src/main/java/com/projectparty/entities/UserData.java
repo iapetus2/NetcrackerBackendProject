@@ -32,10 +32,10 @@ public class UserData {
     @MapKeyColumn(name = "tradingItemId")
     private Map<Integer, Integer> items;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "userData")
     private List<Order> orders;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "userData")
     private List<Deal> deals;
 
 }

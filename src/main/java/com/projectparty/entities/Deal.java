@@ -33,8 +33,8 @@ public class Deal {
 
     @NonNull
     @ManyToOne
-    @JoinColumn(nullable = false)
-    private User user;
+    @JoinColumn
+    private UserData userData;
 
     @Column(name = "amount")
     private int amount;

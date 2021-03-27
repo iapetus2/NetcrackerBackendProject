@@ -23,6 +23,7 @@ public class RegistrationController {
 
     @Autowired
     PasswordEncoder encoder;
+
     @CrossOrigin(origins = "*")
     @PostMapping("/api/auth/signup")
     public ResponseEntity<?> addUser(@RequestBody SignupRequest signupRequest) {

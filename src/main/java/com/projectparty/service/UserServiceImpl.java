@@ -2,7 +2,6 @@ package com.projectparty.service;
 
 import com.projectparty.dao.UserDao;
 import com.projectparty.entities.User;
-import com.projectparty.entities.UserData;
 import com.projectparty.entities.UserRoleEnum;
 import com.projectparty.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

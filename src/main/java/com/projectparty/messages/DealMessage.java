@@ -5,26 +5,26 @@ import com.projectparty.entities.Deal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class GraphMessage{
+public class DealMessage {
 
    private Deal deal;
    private long price;
    private String timeStamp;
 
-    public GraphMessage(Deal deal) {
+    public DealMessage(Deal deal) {
         this.deal = deal;
         this.price = deal.getDealPrice();
         this.timeStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss")
                 .format(Calendar.getInstance().getTime());
     }
 
-    public GraphMessage(long price) {
+    public DealMessage(long price) {
         this.price = price;
         this.timeStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss")
                 .format(Calendar.getInstance().getTime());
     }
 
-    public GraphMessage() {
+    public DealMessage() {
     }
 
     public Deal getDeal() {

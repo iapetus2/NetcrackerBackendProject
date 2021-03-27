@@ -39,9 +39,9 @@ public class Order {
     private Date orderDate;
 
     @NonNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn
-    private User user;
+    private UserData userData;
 
     @NonNull
     @Column(name = "amount")
@@ -58,11 +58,11 @@ public class Order {
             throw new RuntimeException("Both price and amount must be positive");
        }
 
-        if (orderType == OrderType.SELL && user.getUserData().getItems().get(tradingItem.getItemId()) < amount) {
+        if (orderType == OrderType.SELL && userData.getItems().get(tradingItem.getItemId()) < amount) {
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
-     if (user.getUserData().getCash() < orderPrice * amount) {
+     if (userData.getCash() < orderPrice * amount) {
             throw new RuntimeException("Insufficient funds");
         }
     }

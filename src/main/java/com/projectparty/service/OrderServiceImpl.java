@@ -1,10 +1,7 @@
 package com.projectparty.service;
 
 import com.projectparty.dao.OrderDao;
-import com.projectparty.entities.Deal;
-import com.projectparty.entities.Order;
-import com.projectparty.entities.OrderType;
-import com.projectparty.entities.User;
+import com.projectparty.entities.*;
 import com.projectparty.messages.OrderMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(Order order) {
-        order.setUser(userServiceImpl.read(order.getUser().getUserId()));
+        order.setUserData(userServiceImpl.read(order.getUserData().getUserId()).getUserData());
 
         validateOrder(order);
         List<Order> strategyOrders = findMatchingOrders(order);
@@ -94,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
             return Collections.emptyList();
         }
 
-        order.getUser().getUserData().getItems().putIfAbsent(tradingItemId, 0);
+        order.getUserData().getItems().putIfAbsent(tradingItemId, 0);
 
         List<Order> strategyOrders = new ArrayList<>();
         int amount = order.getAmount();
@@ -116,13 +113,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         final int tradingItemId = order.getTradingItem().getItemId();
-        final int amountUserOwns = order.getUser().getUserData().getItems().getOrDefault(tradingItemId, 0);
+        final int amountUserOwns = order.getUserData().getItems().getOrDefault(tradingItemId, 0);
 
         if (order.getOrderType() == OrderType.SELL && amountUserOwns < order.getAmount()) {
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
-        if (order.getUser().getUserData().getCash() < order.getOrderPrice() * order.getAmount()) {
+        if (order.getUserData().getCash() < order.getOrderPrice() * order.getAmount()) {
             throw new RuntimeException("Insufficient funds");
         }
     }
@@ -152,12 +149,12 @@ public class OrderServiceImpl implements OrderService {
     //this method needs to be supplemented
     private void makeDeals(List<Order> strategyOrders, Order order){
         User partner;
-        User user = order.getUser();
+        User user = order.getUserData().getUser();
         long orderPrice;
 
         for(Order currentOrder : strategyOrders){
             orderPrice = currentOrder.getOrderPrice();
-            partner = userServiceImpl.read(currentOrder.getUser().getUserId());
+            partner = userServiceImpl.read(currentOrder.getUserData().getUser().getUserId());
             order.setAmount(Math.max(order.getAmount() - currentOrder.getAmount(), 0));
 
             Deal deal = new Deal();
@@ -194,7 +191,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void setNewDealParameters(Deal deal, Order order, long orderPrice){
         deal.setDealDate(new Date());
-        deal.setUser(order.getUser());
+        deal.setUserData(order.getUserData());
         deal.setDealPrice(orderPrice);
         deal.setAmount(order.getAmount());
         deal.setDealItemId(order.getTradingItem().getItemId());
@@ -208,7 +205,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderList.stream()
-                .filter(order -> (order.getOrderType() == orderType) && (order.getUser().getUserId() != newOrder.getUser().getUserId()))
+                .filter(order -> (order.getOrderType() == orderType) && (order.getUserData().getUser().getUserId()
+                        != newOrder.getUserData().getUser().getUserId()))
                 .sorted(orderComparator)
                 .collect(Collectors.toList());
     }

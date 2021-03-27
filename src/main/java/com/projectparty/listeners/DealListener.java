@@ -3,7 +3,7 @@ package com.projectparty.listeners;
 import com.projectparty.controllers.MessageController;
 import com.projectparty.entities.Deal;
 import com.projectparty.entities.TradingItem;
-import com.projectparty.messages.GraphMessage;
+import com.projectparty.messages.DealMessage;
 import com.projectparty.service.TradingItemServiceImpl;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
@@ -32,7 +32,7 @@ public class DealListener implements PostUpdateEventListener, PostInsertEventLis
         tradingItemService.update(tradingItem,deal.getDealItemId());
 
         //Sending message to subscribers
-        GraphMessage graphMessage = new GraphMessage(deal);
+        DealMessage dealMessage = new DealMessage(deal);
         try {
             //messageController.send(graphMessage);
             System.out.println("Sent!");

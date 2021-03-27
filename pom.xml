@@ -62,7 +62,6 @@
             <version>2.3.4.RELEASE</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
@@ -141,8 +140,6 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>org.webjars</groupId>

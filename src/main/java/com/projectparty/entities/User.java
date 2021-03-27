@@ -1,7 +1,6 @@
 package com.projectparty.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
