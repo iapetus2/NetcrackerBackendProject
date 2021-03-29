@@ -6,17 +6,14 @@ import com.projectparty.entities.UserRoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Id;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class UserDataImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     private int id;
@@ -29,9 +26,9 @@ public class UserDetailsImpl implements UserDetails {
 
     private UserRoleEnum role;
 
-    public static UserDetailsImpl build(User user) {
+    public static UserDataImpl build(User user) {
 
-        return new UserDetailsImpl(
+        return new UserDataImpl(
                 user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),

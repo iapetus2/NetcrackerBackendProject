@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "userRoles")
-public class Role implements GrantedAuthority {
+public class Role{
 
     @Id
     private Long id;
@@ -29,8 +29,4 @@ public class Role implements GrantedAuthority {
         this.roleName = name;
     }
 
-    @Override
-    public String getAuthority() {
-        return getRoleName().toString();
-    }
 }

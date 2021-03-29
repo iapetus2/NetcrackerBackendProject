@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.projectparty.service.UserDetailsImpl;
+import com.projectparty.service.UserDataImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -14,20 +14,20 @@ import io.jsonwebtoken.*;
 public class JwtUtils {
     private static final Logger logger = Logger.getLogger(JwtUtils.class.getName());
 
-    @Value("kuku")
-    private String jwtSecret;
+    @Value("${test.jwt.jwtExpirationMs}")
+    private int jwtExpirationMs;
 
-    //@Value("86400000")
-//    private int jwtExpirationMs = 900000;
+    @Value("${test.jwt.jwtSecret}")
+    private String jwtSecret;
 
     public String generateJwtToken(Authentication authentication) {
 
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        UserDataImpl userPrincipal = (UserDataImpl) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 9000000))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
