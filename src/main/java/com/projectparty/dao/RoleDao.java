@@ -10,11 +10,16 @@ import java.util.logging.Logger;
 
 @Repository
 public class RoleDao {
+
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    SessionFactory sessionFactory;
+    public RoleDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     Logger logger = Logger.getLogger(UserDao.class.getName());
-    public Role findByRolename(String name) {
+    public Role findByRoleName(String name) {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
