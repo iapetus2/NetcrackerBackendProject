@@ -34,7 +34,7 @@ public class DealListener implements PostUpdateEventListener, PostInsertEventLis
         //Sending message to subscribers
         DealMessage dealMessage = new DealMessage(deal);
         try {
-            //messageController.send(graphMessage);
+            messageController.sendToGraph(dealMessage);
             System.out.println("Sent!");
         } catch (Exception e) {
             throw new RuntimeException("Could not send message to subscribers");

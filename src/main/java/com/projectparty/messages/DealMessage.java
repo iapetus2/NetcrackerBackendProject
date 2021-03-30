@@ -1,49 +1,26 @@
 package com.projectparty.messages;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectparty.entities.Deal;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 public class DealMessage {
 
-   private Deal deal;
-   private long price;
-   private String timeStamp;
+    private final long price;
+    @JsonFormat(pattern = "MM/dd/yyyy HH:mm:ss",timezone = "Europe/Moscow")
+    private final Date time;
 
     public DealMessage(Deal deal) {
-        this.deal = deal;
         this.price = deal.getDealPrice();
-        this.timeStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss")
-                .format(Calendar.getInstance().getTime());
-    }
-
-    public DealMessage(long price) {
-        this.price = price;
-        this.timeStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss")
-                .format(Calendar.getInstance().getTime());
-    }
-
-    public DealMessage() {
-    }
-
-    public Deal getDeal() {
-        return deal;
+        this.time =  new Date();
     }
 
     public long getPrice() {
         return price;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    @Override
-    public String toString() {
-        return "GraphMessage{" +
-                "price=" + price +
-                ", timeStamp='" + timeStamp + '\'' +
-                '}';
+    public Date getTime() {
+        return time;
     }
 }
