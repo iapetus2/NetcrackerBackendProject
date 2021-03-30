@@ -2,10 +2,11 @@ package com.projectparty.controllers;
 
 import com.projectparty.dao.RoleDao;
 import com.projectparty.dao.UserDao;
+import com.projectparty.entities.User;
 import com.projectparty.requests.LoginRequest;
 import com.projectparty.response.JwtResponse;
 import com.projectparty.security.jwt.JwtUtils;
-import com.projectparty.service.UserDataImpl;
+import com.projectparty.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -56,11 +57,11 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDataImpl userDetails = (UserDataImpl) authentication.getPrincipal();
+        User userDetails = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
-                userDetails.getId(),
+                userDetails.getUserId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 userDetails.getRole()));

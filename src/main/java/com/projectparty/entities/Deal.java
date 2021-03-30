@@ -34,7 +34,7 @@ public class Deal {
     @NonNull
     @ManyToOne
     @JoinColumn
-    private UserData userData;
+    private User user;
 
     @Column(name = "amount")
     private int amount;

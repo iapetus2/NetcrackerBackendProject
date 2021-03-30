@@ -1,14 +1,14 @@
 package com.projectparty.security.jwt;
 
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.projectparty.service.UserDataImpl;
+import com.projectparty.entities.User;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.*;
+
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class JwtUtils {
@@ -22,7 +22,7 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication) {
 
-        UserDataImpl userPrincipal = (UserDataImpl) authentication.getPrincipal();
+        User userPrincipal = (User) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))

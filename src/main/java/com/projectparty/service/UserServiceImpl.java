@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     public static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 
@@ -66,5 +66,4 @@ public class UserServiceImpl implements UserService{
         return userDao.update(customer, customer.getUserId()) &&
                 userDao.update(seller, seller.getUserId());
     }
-
 }
