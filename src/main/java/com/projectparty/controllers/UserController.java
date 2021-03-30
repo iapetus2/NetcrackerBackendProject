@@ -56,7 +56,7 @@ public class UserController {
     @PutMapping(value = "/api/user/{id}/cash")
     public ResponseEntity<?> updateCash(@PathVariable(name = "id") int id, @RequestBody User user) {
         User userFromDb = userService.read(id);
-        userFromDb.setCash(user.getCash());
+        userFromDb.setCash(user.getCash() + userFromDb.getCash());
         final boolean updated = userService.update(userFromDb, id);
 
         return updated
