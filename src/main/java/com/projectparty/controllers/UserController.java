@@ -53,6 +53,16 @@ public class UserController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
+    @PutMapping(value = "/api/user/{id}/cash")
+    public ResponseEntity<?> updateCash(@PathVariable(name = "id") int id, @RequestBody User user) {
+        User userFromDb = userService.read(id);
+        userFromDb.setCash(user.getCash());
+        final boolean updated = userService.update(userFromDb, id);
+
+        return updated
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
 
     @DeleteMapping(value = "/api/user/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
