@@ -64,8 +64,8 @@ public class LoginController {
                 userDetails.getUserId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                userDetails.getRole()));
-
+                userDetails.getRole(),
+                userDetails.getCash()));
     }
 }
 
