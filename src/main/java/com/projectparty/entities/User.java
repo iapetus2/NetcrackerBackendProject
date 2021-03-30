@@ -33,7 +33,7 @@ public class User {
     @JsonIgnore
     private UserRoleEnum role;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
     private UserData userData;
 
     public User(String username, String email, String password) {

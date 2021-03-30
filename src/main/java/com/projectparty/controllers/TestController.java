@@ -1,5 +1,6 @@
 package com.projectparty.controllers;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ public class TestController {
 	}
 	
 	@GetMapping("/user")
-	@PreAuthorize("hasAuthority('ROLE_USER') or hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER')")
 	public String userAccess() {
 		return "User Content.";
 	}

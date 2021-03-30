@@ -34,6 +34,7 @@ public class UserDao {
             UserData userData = new UserData();
             userData.setUserId(user.getUserId());
             userData.setCash(10000);
+            userData.setUser(user);
             session.save(userData);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Exception: ", e);
@@ -78,7 +79,8 @@ public class UserDao {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            return session.get(User.class, id);
+            User user = session.get(User.class, id);
+            return user;
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can not read from database", e);

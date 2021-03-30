@@ -17,15 +17,15 @@ import java.util.Map;
 public class UserData {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     private int userId;
 
     @Nullable
     @Column(name = "cash")
     private long cash;
 
-    @OneToOne(mappedBy = "userData")
-    @JoinColumn
+    @OneToOne
+    @JoinColumn(name = "id")
     private User user;
 
     @ElementCollection

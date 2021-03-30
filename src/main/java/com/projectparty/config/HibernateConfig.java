@@ -1,5 +1,6 @@
 package com.projectparty.config;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -26,7 +27,7 @@ public class HibernateConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
         properties.put("hibernate.current_session_context_class","org.springframework.orm.hibernate5.SpringSessionContext");
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
         properties.put("hibernate.show_sql", "true");
         return properties;
     }
@@ -34,9 +35,9 @@ public class HibernateConfig {
     @Bean
     public static DataSource dataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
-        dataSource.setURL("jdbc:sqlserver://127.0.0.1:1433;database=auctiondb");
-        dataSource.setUser("User");
-        dataSource.setPassword("admin");
+        dataSource.setURL("jdbc:sqlserver://127.0.0.1:51264;database=NetcrackerDB");
+        dataSource.setUser("Iskander");
+        dataSource.setPassword("Khafi");
         return dataSource;
     }
 
