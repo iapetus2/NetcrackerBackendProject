@@ -26,6 +26,7 @@ public class OrderController {
         orderService.save(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
     @CrossOrigin(origins = "*")
     @GetMapping("/orders/{id}")
     public ResponseEntity<Order> read(@PathVariable(name = "id") int id) {
@@ -35,6 +36,7 @@ public class OrderController {
                 ? new ResponseEntity<>(order, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @CrossOrigin(origins = "*")
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> readAll() {
@@ -44,6 +46,7 @@ public class OrderController {
                 ? new ResponseEntity<>(orders, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @CrossOrigin(origins = "*")
     @PutMapping("/orders/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Order order) {
@@ -53,9 +56,10 @@ public class OrderController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
+
     @CrossOrigin(origins = "*")
-    @DeleteMapping(value = "/orders/{orderId}")
-    public ResponseEntity<?> delete(@PathVariable(name = "orderId") int orderId) {
+    @DeleteMapping(value = "/orders/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int orderId) {
         final boolean deleted = orderService.delete(orderId);
 
         return deleted

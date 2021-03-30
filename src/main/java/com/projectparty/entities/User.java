@@ -22,7 +22,6 @@ import java.util.Map;
 public class User implements UserDetails {
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int userId;
@@ -49,10 +48,10 @@ public class User implements UserDetails {
     @MapKeyColumn(name = "tradingItemId")
     private Map<Integer, Integer> items;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Deal> deals;
 
     @Nullable

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +36,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean save(User user) {
         user.setRole(UserRoleEnum.ROLE_USER);
+        Map<Integer,Integer> map = Map.of(
+                10,1,
+                20,1
+        );
+        user.setCash(100);
+        user.setItems(map);
         logger.log(Level.SEVERE, user.toString());
         userDao.save(user);
         return true;
