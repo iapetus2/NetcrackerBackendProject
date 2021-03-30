@@ -38,7 +38,7 @@ public class Order {
     @Column(name = "creationDate")
     private Date orderDate;
 
-    @NonNull
+
     @ManyToOne
     @JoinColumn
     private User user;
