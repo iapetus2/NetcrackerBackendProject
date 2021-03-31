@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 	@GetMapping("/all")
 	public String allAccess() {
-		return "Public Content.";
+		return "Welcome to NetTrade!";
 	}
 	
 	@GetMapping("/user")
-	//@PreAuthorize("hasRole('USER')")
+	//@PreAuthorize("has Role('USER')")
 	public String userAccess() {
 		return "User Content.";
 	}

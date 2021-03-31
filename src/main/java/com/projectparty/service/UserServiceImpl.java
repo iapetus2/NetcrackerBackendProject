@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
                 10,1,
                 20,1
         );
-        user.setCash(100);
+        user.setCash(0);
         user.setItems(map);
         logger.log(Level.SEVERE, user.toString());
         userDao.save(user);
