@@ -35,16 +35,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean save(User user) {
+        setUserData(user);
+        logger.log(Level.SEVERE, user.toString());
+        userDao.save(user);
+        return true;
+    }
+
+
+    private void setUserData(User user){
         user.setRole(UserRoleEnum.ROLE_USER);
         Map<Integer,Integer> map = Map.of(
                 10,1,
                 20,1
         );
+        Map<Integer,Integer> frozenMap = Map.of(
+                10,0,
+                20,0
+        );
         user.setCash(100);
         user.setItems(map);
-        logger.log(Level.SEVERE, user.toString());
-        userDao.save(user);
-        return true;
     }
 
     @Override
@@ -68,7 +77,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //add frozen cash functional
     public boolean deal(User customer, User seller) {
         return userDao.update(customer, customer.getUserId()) &&
                 userDao.update(seller, seller.getUserId());

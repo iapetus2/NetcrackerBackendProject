@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void save(Deal deal) {
+        deal.setDealDate(new Date());
         itemsDao.save(deal);
     }
 
@@ -42,6 +44,11 @@ public class DealServiceImpl implements DealService {
     @Override
     public boolean delete(int id) {
         return itemsDao.delete(id);
+    }
+
+    @Override
+    public List<Deal> readAllItemsById(int id) {
+        return itemsDao.readAllItemsById(id);
     }
 
 }

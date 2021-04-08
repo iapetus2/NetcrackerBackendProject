@@ -31,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
         validateOrder(order);
         List<Order> strategyOrders = findMatchingOrders(order);
+        changeFrozenParameters(order);
 
         if (!strategyOrders.isEmpty()) {
             makeDeals(strategyOrders, order);
@@ -80,6 +81,20 @@ public class OrderServiceImpl implements OrderService {
         return itemsDao.update(order, id);
     }
 
+    private void changeFrozenParameters(Order order){
+        User user = order.getUser();
+
+        if(order.getOrderType() == OrderType.BUY){
+            user.setFrozenCash(user.getFrozenCash() + order.getAmount() * order.getOrderPrice());
+        }
+        else {
+            int newFrozenAmount = user.getFrozenItems()
+                    .get(order.getTradingItem().getItemId()) + order.getAmount();
+            user.getFrozenItems()
+                .replace(order.getTradingItem().getItemId(),newFrozenAmount);
+        }
+    }
+
     private List<Order> findMatchingOrders(Order order) {
         final int tradingItemId = order.getTradingItem().getItemId();
 
@@ -112,14 +127,18 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Both price and amount must be positive");
         }
 
+        final User user = order.getUser();
         final int tradingItemId = order.getTradingItem().getItemId();
-        final int amountUserOwns = order.getUser().getItems().getOrDefault(tradingItemId, 0);
+        final int amountUserOwns = user.getItems().getOrDefault(tradingItemId, 0);
+        final int frozenAmountUserOwns = user.getFrozenItems().getOrDefault(tradingItemId,0);
 
-        if (order.getOrderType() == OrderType.SELL && amountUserOwns < order.getAmount()) {
+        if (order.getOrderType() == OrderType.SELL
+                && amountUserOwns - frozenAmountUserOwns < order.getAmount()) {
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
-        if (order.getUser().getCash() < order.getOrderPrice() * order.getAmount()) {
+        if (order.getOrderType() == OrderType.BUY
+                && user.getCash() - user.getFrozenCash() < order.getOrderPrice() * order.getAmount()) {
             throw new RuntimeException("Insufficient funds");
         }
     }
@@ -146,7 +165,6 @@ public class OrderServiceImpl implements OrderService {
         return order.getOrderType() != OrderType.SELL || runningOrder.getOrderPrice() >= order.getOrderPrice();
     }
 
-    //this method needs to be supplemented
     private void makeDeals(List<Order> strategyOrders, Order order){
         User partner;
         User user = order.getUser();
@@ -177,6 +195,7 @@ public class OrderServiceImpl implements OrderService {
         final int tradingItemId = order.getTradingItem().getItemId();
 
         if(order.getOrderType() == OrderType.BUY) {
+            user.setFrozenCash(user.getFrozenCash() - orderPrice);
             user.setCash(user.getCash() - orderPrice * amount);
             user.getItems()
                     .replace(tradingItemId, user.getItems().get(tradingItemId) + amount);
@@ -185,6 +204,8 @@ public class OrderServiceImpl implements OrderService {
             user.setCash(user.getCash() + orderPrice * amount);
             user.getItems()
                     .replace(tradingItemId, user.getItems().get(tradingItemId) - amount);
+            user.getFrozenItems()
+                    .replace(tradingItemId, user.getFrozenItems().get(tradingItemId) - amount);
         }
         user.getDeals().add(deal);
     }

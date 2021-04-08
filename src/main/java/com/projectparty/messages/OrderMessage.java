@@ -31,8 +31,6 @@ public class OrderMessage {
     }
 
 
-
-
     @Override
     public boolean equals(Object object) {
         boolean equation = false;

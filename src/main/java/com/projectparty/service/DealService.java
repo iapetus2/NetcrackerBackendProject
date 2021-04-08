@@ -14,4 +14,6 @@ public interface DealService {
     boolean update(Deal deal, int id);
 
     boolean delete(int id);
+
+    List<Deal> readAllItemsById(int id);
 }

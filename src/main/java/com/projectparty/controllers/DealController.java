@@ -1,6 +1,7 @@
 package com.projectparty.controllers;
 
 import com.projectparty.entities.Deal;
+import com.projectparty.messages.DealMessage;
 import com.projectparty.service.DealServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -36,13 +38,21 @@ public class DealController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/api/deal")
-    public ResponseEntity<List<Deal>> read() {
-        final List<Deal> deals = dealService.readAll();
+    @GetMapping(value = "/api/deal/rooms/{id}")
+    public ResponseEntity<List<DealMessage>> readAll(@PathVariable(name = "id") int id) {
+        final List<Deal> deals = dealService.readAllItemsById(id);
 
-        return deals != null &&  !deals.isEmpty()
-                ? new ResponseEntity<>(deals, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(deals != null &&  !deals.isEmpty()){
+            final List<DealMessage> messages = deals
+                    .stream()
+                    .map(DealMessage::new)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PutMapping(value = "/api/deal/{id}")

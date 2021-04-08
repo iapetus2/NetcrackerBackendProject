@@ -1,7 +1,6 @@
 package com.projectparty.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +43,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+
+    @ElementCollection
+    @MapKeyColumn(name = "tradingItemId")
+    private Map<Integer, Integer> frozenItems;
+
     @ElementCollection
     @MapKeyColumn(name = "tradingItemId")
     private Map<Integer, Integer> items;
@@ -54,9 +58,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Deal> deals;
 
-    @Nullable
     @Column(name = "cash")
     private long cash;
+
+    @Column(name = "frozen_cash")
+    private long frozenCash;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

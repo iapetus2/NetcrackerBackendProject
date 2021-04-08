@@ -1,6 +1,7 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.Deal;
+import com.projectparty.entities.Order;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,14 @@ public class DealDao {
                     .getCurrentSession();
             return session.createQuery("FROM Deal", Deal.class)
                     .list();
+    }
+
+    public List<Deal> readAllItemsById(int id) {
+        var session = sessionFactory
+                .getCurrentSession();
+        return session.createQuery("FROM Deal WHERE tradingItemId = :itemId", Deal.class)
+                .setParameter("itemId", id)
+                .list();
     }
 
     public Deal read(int id) {
