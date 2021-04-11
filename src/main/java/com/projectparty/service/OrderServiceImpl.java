@@ -202,10 +202,10 @@ public class OrderServiceImpl implements OrderService {
         }
         else{
             user.setCash(user.getCash() + orderPrice * amount);
+            user.getFrozenItems()
+                    .replace(tradingItemId,user.getFrozenItems().get(tradingItemId) - amount);
             user.getItems()
                     .replace(tradingItemId, user.getItems().get(tradingItemId) - amount);
-            user.getFrozenItems()
-                    .replace(tradingItemId, user.getFrozenItems().get(tradingItemId) - amount);
         }
         user.getDeals().add(deal);
     }

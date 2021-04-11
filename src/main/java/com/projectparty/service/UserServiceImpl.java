@@ -48,12 +48,14 @@ public class UserServiceImpl implements UserService {
                 10,1,
                 20,1
         );
+        
         Map<Integer,Integer> frozenMap = Map.of(
                 10,0,
                 20,0
         );
         user.setCash(100);
         user.setItems(map);
+        user.setFrozenItems(frozenMap);
     }
 
     @Override
