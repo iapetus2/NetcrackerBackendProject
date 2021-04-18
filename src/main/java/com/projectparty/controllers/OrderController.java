@@ -1,6 +1,8 @@
 package com.projectparty.controllers;
 
 import com.projectparty.entities.Order;
+import com.projectparty.messages.DealMessage;
+import com.projectparty.messages.OrderMessage;
 import com.projectparty.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -38,13 +41,16 @@ public class OrderController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/orders")
-    public ResponseEntity<List<Order>> readAll() {
-        final List<Order> orders = orderService.readAll();
+    @GetMapping("/orders/rooms/{id}")
+    public ResponseEntity<List<OrderMessage>> readAll(@PathVariable(name = "id") int id) {
+        final List<OrderMessage> orders = orderService.readAllItemsById(id);
 
-        return orders != null &&  !orders.isEmpty()
-                ? new ResponseEntity<>(orders, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(orders != null && !orders.isEmpty()){
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @CrossOrigin(origins = "*")

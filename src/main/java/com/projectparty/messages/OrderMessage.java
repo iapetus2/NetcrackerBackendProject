@@ -9,7 +9,7 @@ public class OrderMessage {
     private final long price;
 
     public OrderMessage(Order order) {
-        this.type =order.getOrderType();
+        this.type = order.getOrderType();
         this.amount = order.getAmount();
         this.price = order.getOrderPrice();
     }
