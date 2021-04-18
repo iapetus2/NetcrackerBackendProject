@@ -3,7 +3,6 @@ package com.projectparty.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,13 +17,13 @@ public class Role{
     @Id
     private Long id;
 
-    private UserRoleEnum roleName;
+    private RoleType roleName;
 
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    public Role(Long id, UserRoleEnum name) {
+    public Role(Long id, RoleType name) {
         this.id = id;
         this.roleName = name;
     }

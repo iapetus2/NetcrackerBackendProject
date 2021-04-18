@@ -1,6 +1,6 @@
 package com.projectparty.entities;
 
-public enum UserRoleEnum {
+public enum RoleType {
     ROLE_USER,
     ROLE_MODERATOR,
     ROLE_ADMIN

@@ -19,20 +19,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
     AuthenticationManager authenticationManager;
-
     UserDao userDao;
-
     RoleDao roleDao;
-
     PasswordEncoder encoder;
-
     JwtUtils jwtUtils;
 
     @Autowired

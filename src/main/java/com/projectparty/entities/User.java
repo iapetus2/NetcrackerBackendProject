@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private String password;
 
     @JsonIgnore
-    private UserRoleEnum role;
+    private RoleType role;
 
     public User(String username, String email, String password) {
         this.username = username;

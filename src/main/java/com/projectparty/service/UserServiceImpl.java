@@ -1,8 +1,8 @@
 package com.projectparty.service;
 
 import com.projectparty.dao.UserDao;
+import com.projectparty.entities.RoleType;
 import com.projectparty.entities.User;
-import com.projectparty.entities.UserRoleEnum;
 import com.projectparty.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,10 +43,10 @@ public class UserServiceImpl implements UserService {
 
 
     private void setUserData(User user){
-        user.setRole(UserRoleEnum.ROLE_USER);
+        user.setRole(RoleType.ROLE_USER);
         Map<Integer,Integer> map = Map.of(
-                10,1,
-                20,1
+                10,100,
+                20,100
         );
         
         Map<Integer,Integer> frozenMap = Map.of(

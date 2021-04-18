@@ -1,6 +1,6 @@
 package com.projectparty.response;
 
-import com.projectparty.entities.UserRoleEnum;
+import com.projectparty.entities.RoleType;
 import lombok.Data;
 @Data
 public class JwtResponse {
@@ -10,10 +10,10 @@ public class JwtResponse {
 	private int id;
 	private String username;
 	private String email;
-	private UserRoleEnum role;
+	private RoleType role;
 	private long cash;
 
-	public JwtResponse(String accessToken, int id, String username, String email, UserRoleEnum role, long cash) {
+	public JwtResponse(String accessToken, int id, String username, String email, RoleType role, long cash) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
