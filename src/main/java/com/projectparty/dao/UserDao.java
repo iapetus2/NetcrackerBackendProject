@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 @Component
 @EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
 public class UserDao {
@@ -65,7 +64,7 @@ public class UserDao {
                     .list();
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read database");
+            throw new RuntimeException("Can not read database", e);
         }
     }
 
@@ -73,8 +72,7 @@ public class UserDao {
         try {
             Session session = sessionFactory
                     .getCurrentSession();
-            User user = session.get(User.class, id);
-            return user;
+            return session.get(User.class, id);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
             throw new RuntimeException("Can not read from database", e);
@@ -89,7 +87,7 @@ public class UserDao {
             session.update(user);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Update failure");
+            throw new RuntimeException("Update failure",e);
         }
 
         return true;
@@ -104,7 +102,7 @@ public class UserDao {
             session.delete(proxyUser);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Delete failure");
+            throw new RuntimeException("Delete failure", e);
         }
         return true;
     }
