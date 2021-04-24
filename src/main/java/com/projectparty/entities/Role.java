@@ -8,14 +8,14 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
+@AllArgsConstructor //todo pick one
 @NoArgsConstructor
 @Entity
 @Table(name = "userRoles")
 public class Role{
 
     @Id
-    private Long id;
+    private Long id; //todo primitive
 
     private RoleType roleName;
 

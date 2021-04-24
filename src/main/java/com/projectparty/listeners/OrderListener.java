@@ -44,7 +44,7 @@ public class OrderListener implements PostUpdateEventListener, PostInsertEventLi
         try {
             messageController.sendToOrderBook(orderMessage);
         } catch (Exception e) {
-            throw new RuntimeException("Could not send message to subscribers", e);
+            throw new RuntimeException("Could not send message to subscribers", e); //todo
         }
     }
 

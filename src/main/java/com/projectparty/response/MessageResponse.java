@@ -1,5 +1,6 @@
 package com.projectparty.response;
 
+//todo use lombok
 public class MessageResponse {
 	private String message;
 

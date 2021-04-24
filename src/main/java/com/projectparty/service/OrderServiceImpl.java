@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional //todo remove?
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao itemsDao;
@@ -124,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateOrder(Order order){
         if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
-            throw new RuntimeException("Both price and amount must be positive");
+            throw new RuntimeException("Both price and amount must be positive"); //todo
         }
 
         final User user = order.getUser();

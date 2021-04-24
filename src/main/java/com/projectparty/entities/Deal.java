@@ -15,10 +15,10 @@ import java.util.Date;
 public class Deal {
 
     @Id
-    @NonNull
+    @NonNull //todo do not use on primitive
     @Column(name = "dealId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int dealId;
+    private int dealId; //todo do not use class name
 
     @NonNull
     @Temporal(TemporalType.DATE)

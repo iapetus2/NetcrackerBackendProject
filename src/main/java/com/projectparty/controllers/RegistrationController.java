@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RegistrationController {
 
-    @Autowired
+    @Autowired //todo constructor injection
     private UserService userService;
 
     @Autowired
-    PasswordEncoder encoder;
+    PasswordEncoder encoder; //todo private
 
     @CrossOrigin(origins = "*")
     @PostMapping("/api/auth/signup")

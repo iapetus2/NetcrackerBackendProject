@@ -14,7 +14,7 @@ import java.util.Date;
 public class TradingItem {
 
     @Id
-    @NonNull
+    @NonNull //todo
     @Column(name = "tradingItemId")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int itemId;

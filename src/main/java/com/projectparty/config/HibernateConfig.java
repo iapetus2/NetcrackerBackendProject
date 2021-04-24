@@ -32,7 +32,7 @@ public class HibernateConfig {
         return properties;
     }
 
-    @Bean
+    @Bean //todo move properties to file
     public static DataSource dataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
         dataSource.setURL("jdbc:sqlserver://127.0.0.1:51264;database=NetcrackerDB");

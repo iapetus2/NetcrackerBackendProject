@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional //todo remove
 public class TradingItemServiceImpl implements TradingItemService {
 
     private final TradingItemDao itemsDao;

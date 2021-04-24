@@ -15,12 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-@Transactional
+@Transactional //todo remove
 public class UserServiceImpl implements UserService {
 
     public static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 
-    UserDao userDao;
+    UserDao userDao; //todo
 
     UserDetailsServiceImpl userDetailsService;
 
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     private void setUserData(User user){
         user.setRole(RoleType.ROLE_USER);
-        Map<Integer,Integer> map = Map.of(
+        Map<Integer,Integer> map = Map.of( //todo refactor magic numbers
                 10,100,
                 20,100
         );

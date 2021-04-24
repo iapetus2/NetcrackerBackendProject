@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+//todo remove
 //public class AuthTokenFilter extends OncePerRequestFilter {
 //    @Autowired
 //    private JwtUtils jwtUtils;
@@ -64,7 +64,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService; //todo
 
     private static final Logger logger = Logger.getLogger(AuthTokenFilter.class.getName());
 
@@ -94,7 +94,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String headerAuth = request.getHeader("authorization");
 
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
+            return headerAuth.substring(7, headerAuth.length()); //todo
         }
 
         return null;

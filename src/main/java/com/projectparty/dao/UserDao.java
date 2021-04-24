@@ -13,9 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
-@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class) //todo move somewhere
 public class UserDao {
-    Logger logger = Logger.getLogger(UserDao.class.getName());
+    Logger logger = Logger.getLogger(UserDao.class.getName()); //todo access
 
     private final SessionFactory sessionFactory;
 
@@ -30,19 +30,18 @@ public class UserDao {
                     .getCurrentSession();
             session.save(user);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Exception: ", e);
+            logger.log(Level.SEVERE, "Exception: ", e); //todo
         }
 
     }
 
     public User findByUsername(String name) {
         try {
-            Session session = sessionFactory
-                    .getCurrentSession();
-            Query query =
-                    session.createQuery(
-                            "SELECT id FROM User WHERE username = :name")
-                            .setParameter("name", name);
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session
+                    .createQuery("SELECT id FROM User WHERE username = :name")
+                    .setParameter("name", name);
+
             int id = (int) query.getSingleResult();
 
             User user = this.read(id);
@@ -87,7 +86,7 @@ public class UserDao {
             session.update(user);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Update failure",e);
+            throw new RuntimeException("Update failure", e);
         }
 
         return true;

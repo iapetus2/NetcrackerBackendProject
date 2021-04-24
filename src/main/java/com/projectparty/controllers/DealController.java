@@ -14,9 +14,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
+//todo add error handling to every method, probably use https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc
 public class DealController {
 
-    private final DealServiceImpl dealService;
+    private final DealServiceImpl dealService; // todo use interface
 
     @Autowired
     public DealController(DealServiceImpl dealService) {

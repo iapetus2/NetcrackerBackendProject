@@ -20,6 +20,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class UserController {
 
+    //todo private, interface, move dao
     private final UserServiceImpl userService;
 
     @Autowired
@@ -63,6 +64,8 @@ public class UserController {
 
     @PutMapping(value = "/api/user/{id}/cash")
     public ResponseEntity<?> updateCash(@PathVariable(name = "id") int id, @RequestBody User user) {
+        //todo move business logic to services
+        //todo code style
         User userFromDb = userService.read(id);
         userFromDb.setCash(user.getCash() + userFromDb.getCash());
         final boolean updated = userService.update(userFromDb, id);

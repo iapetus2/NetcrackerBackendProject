@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = {"/api"})
 public class OrderController {
 
-    private final OrderServiceImpl orderService;
+    private final OrderServiceImpl orderService; //todo interface
 
     @Autowired
     public OrderController(OrderServiceImpl orderService) {
@@ -30,7 +30,7 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*") //todo remove
     @GetMapping("/orders/{id}")
     public ResponseEntity<Order> read(@PathVariable(name = "id") int id) {
         final Order order = orderService.read(id);

@@ -10,8 +10,9 @@ import java.util.logging.Logger;
 
 
 @Component
+//todo transactional
 public class TradingItemDao {
-        Logger logger = Logger.getLogger(TradingItemDao.class.getName());
+        Logger logger = Logger.getLogger(TradingItemDao.class.getName());//todo access modifier
 
         private final SessionFactory sessionFactory;
 
@@ -25,7 +26,7 @@ public class TradingItemDao {
                         .getCurrentSession();
                 session.save(TradingItem);
             }catch (Exception e){
-                logger.log(Level.SEVERE, "Exception: ", e);
+                logger.log(Level.SEVERE, "Exception: ", e); //todo
             }
         }
 
@@ -39,7 +40,7 @@ public class TradingItemDao {
             }
             catch (Exception e){
                 logger.severe("Error: " + e.getMessage());
-                throw new RuntimeException("Can not read database");
+                throw new RuntimeException("Can not read database"); //todo
             }
         }
 

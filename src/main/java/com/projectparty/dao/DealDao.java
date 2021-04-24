@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Component
+//todo transactional??
 public class DealDao {
-    private static final Logger logger = Logger.getLogger(DealDao.class.getName());
+    private static final Logger logger = Logger.getLogger(DealDao.class.getName()); //todo not used
 
     private final SessionFactory sessionFactory;
 
@@ -52,7 +53,7 @@ public class DealDao {
             session.load(Deal.class, id);
             session.update(deal);
         } catch (Exception e) {
-            throw new RuntimeException("Update failure");
+            throw new RuntimeException("Update failure"); //todo proper error handling
         }
 
         return true;
@@ -66,7 +67,7 @@ public class DealDao {
             proxyDeal = session.load(Deal.class, id);
             session.delete(proxyDeal);
         } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+            throw new RuntimeException("Delete failure");// todo
         }
 
         return true;

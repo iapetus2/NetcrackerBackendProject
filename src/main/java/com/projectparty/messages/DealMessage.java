@@ -5,6 +5,7 @@ import com.projectparty.entities.Deal;
 
 import java.util.Date;
 
+//todo use lombok
 public class DealMessage {
 
     private final long price;

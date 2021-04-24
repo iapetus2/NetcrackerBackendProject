@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Component
 @Data
-@AllArgsConstructor
+@AllArgsConstructor //todo pick one
 @NoArgsConstructor
 public class UserDataResponse {
 

@@ -25,9 +25,10 @@ import java.util.logging.Logger;
 public class LoginController {
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
+    //todo private
     AuthenticationManager authenticationManager;
-    UserDao userDao;
-    RoleDao roleDao;
+    UserDao userDao; //todo move to services
+    RoleDao roleDao;//todo move to services
     PasswordEncoder encoder;
     JwtUtils jwtUtils;
 
@@ -44,7 +45,7 @@ public class LoginController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
-        logger.log(Level.INFO, loginRequest.toString());
+        logger.log(Level.INFO, loginRequest.toString()); //todo should be debug, make message human friendly
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),

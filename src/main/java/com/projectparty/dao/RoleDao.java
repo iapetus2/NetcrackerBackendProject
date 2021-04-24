@@ -9,16 +9,18 @@ import org.springframework.stereotype.Repository;
 import java.util.logging.Logger;
 
 @Repository
+//todo transactional
+//todo delete
 public class RoleDao {
 
     private final SessionFactory sessionFactory;
+
+    Logger logger = Logger.getLogger(UserDao.class.getName());
 
     @Autowired
     public RoleDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
-    Logger logger = Logger.getLogger(UserDao.class.getName());
     public Role findByRoleName(String name) {
         try {
             Session session = sessionFactory

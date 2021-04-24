@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class TradingItemController {
 
-    private final TradingItemServiceImpl tradingItemService;
+    private final TradingItemServiceImpl tradingItemService; //todo interface
 
     @Autowired
     public TradingItemController(TradingItemServiceImpl tradingItemService) {

@@ -28,7 +28,10 @@ public class OrderDao {
             Session session = sessionFactory
                 .getCurrentSession();
             session.save(order);
-        } catch (Exception e) {
+        } catch (Exception e) { //todo think of custom ex
+            //todo do not handle here
+            //todo caller never knows if exception occurred
+            //todo make message human friendly
             logger.log(Level.SEVERE, "Exception: ", e);
         }
     }
@@ -62,7 +65,7 @@ public class OrderDao {
             session.load(Order.class, id);
             session.update(order);
         } catch (Exception e) {
-            throw new RuntimeException("Update failure");
+            throw new RuntimeException("Update failure"); //todo
         }
 
         return true;
@@ -76,7 +79,7 @@ public class OrderDao {
             proxyOrder = session.load(Order.class, id);
             session.delete(proxyOrder);
         } catch (Exception e) {
-            throw new RuntimeException("Delete failure");
+            throw new RuntimeException("Delete failure"); //todo
         }
 
         return true;

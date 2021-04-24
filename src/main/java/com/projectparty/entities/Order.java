@@ -19,7 +19,7 @@ public class Order {
     @JsonIgnore
     @Column(name = "orderId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer orderId;
+    private Integer orderId; //todo should be primitive, do not use order
 
     @ManyToOne
     @JoinColumn(name = "tradingItemId")
@@ -29,7 +29,7 @@ public class Order {
     @Column(name = "type")
     private OrderType orderType;
 
-    @NonNull
+    @NonNull //todo remove
     @Column(name = "price")
     private long orderPrice;
 
@@ -52,17 +52,17 @@ public class Order {
         return "";
     }
 
-    @PrePersist
-   public void onCreate() {
+    @PrePersist //todo refactor
+    public void onCreate() {
         if (orderPrice <= 0 || amount <= 0) {
             throw new RuntimeException("Both price and amount must be positive");
-       }
+        }
 
         if (orderType == OrderType.SELL && user.getItems().get(tradingItem.getItemId()) < amount) {
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
-     if (user.getCash() < orderPrice * amount) {
+        if (user.getCash() < orderPrice * amount) {
             throw new RuntimeException("Insufficient funds");
         }
     }

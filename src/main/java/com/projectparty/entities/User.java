@@ -16,7 +16,7 @@ import java.util.Map;
 @Entity
 @Table(name = "Users")
 @Data
-@AllArgsConstructor
+@AllArgsConstructor //todo
 @NoArgsConstructor
 public class User implements UserDetails {
 
@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private RoleType role;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password) { //todo move below fields
         this.username = username;
         this.email = email;
         this.password = password;

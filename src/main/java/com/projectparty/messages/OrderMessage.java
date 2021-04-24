@@ -31,7 +31,7 @@ public class OrderMessage {
     }
 
 
-    @Override
+    @Override //todo hashcode
     public boolean equals(Object object) {
         boolean equation = false;
 

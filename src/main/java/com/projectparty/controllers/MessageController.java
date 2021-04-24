@@ -21,12 +21,12 @@ public class MessageController {
     @RequestMapping(path="/deals", method = RequestMethod.POST)
     public void sendToGraph(@RequestBody DealMessage dealMessage) {
         template.convertAndSend("/topic/deals", dealMessage);
-        System.out.println("Sent to deal graph");
+        System.out.println("Sent to deal graph");//todo logger
     }
 
     public void sendToOrderBook(OrderMessage orderMessage){
         template.convertAndSend("/topic/orders",orderMessage);
-        System.out.println("Sent to orderBook");
+        System.out.println("Sent to orderBook");//todo logger
     }
 
 }

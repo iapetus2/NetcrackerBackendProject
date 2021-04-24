@@ -24,10 +24,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // securedEnabled = true,
         // jsr250Enabled = true,
         prePostEnabled = true)
+//todo add to context
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    @Autowired //todo move to constructor injection
+    UserDetailsServiceImpl userDetailsService; // todo make private, use interface instead of impl
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
