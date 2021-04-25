@@ -10,7 +10,6 @@ import java.util.Map;
 
 @Component
 @Data
-@AllArgsConstructor //todo pick one
 @NoArgsConstructor
 public class UserDataResponse {
 
@@ -26,10 +25,8 @@ public class UserDataResponse {
 
     private Map<String, Integer> frozenItems;
 
-    private Map<Integer, String> itemNames;
-
     public UserDataResponse(String username, long cash, long frozenCash, Map<String,
-            Integer> items, Map<String, Integer> frozenItems){
+            Integer> items, Map<String, Integer> frozenItems) {
         this.username = username;
         this.cash = cash;
         this.frozenCash = frozenCash;

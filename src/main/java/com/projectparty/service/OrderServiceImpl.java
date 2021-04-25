@@ -35,11 +35,10 @@ public class OrderServiceImpl implements OrderService {
 
         if (!strategyOrders.isEmpty()) {
             makeDeals(strategyOrders, order);
-            if(order.getAmount() > 0){
+            if (order.getAmount() > 0) {
                 itemsDao.save(order);
             }
-        }
-        else{
+        } else {
             itemsDao.save(order);
         }
     }
@@ -81,17 +80,16 @@ public class OrderServiceImpl implements OrderService {
         return itemsDao.update(order, id);
     }
 
-    private void changeFrozenParameters(Order order){
+    private void changeFrozenParameters(Order order) {
         User user = order.getUser();
 
-        if(order.getOrderType() == OrderType.BUY){
+        if (order.getOrderType() == OrderType.BUY) {
             user.setFrozenCash(user.getFrozenCash() + order.getAmount() * order.getOrderPrice());
-        }
-        else {
+        } else {
             int newFrozenAmount = user.getFrozenItems()
                     .get(order.getTradingItem().getItemId()) + order.getAmount();
             user.getFrozenItems()
-                .replace(order.getTradingItem().getItemId(),newFrozenAmount);
+                    .replace(order.getTradingItem().getItemId(), newFrozenAmount);
         }
     }
 
@@ -102,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
                 filterOrderListByType(itemsDao.readAllItemsById(tradingItemId),
                         order.getOrderType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
 
-        if(!checkOrderFeasibility(orderList, order)){
+        if (!checkOrderFeasibility(orderList, order)) {
             return Collections.emptyList();
         }
 
@@ -111,8 +109,8 @@ public class OrderServiceImpl implements OrderService {
         List<Order> strategyOrders = new ArrayList<>();
         int amount = order.getAmount();
 
-        for(Order runningOrder : orderList){
-            if(!checkForMatchingEnd(runningOrder, order) || amount <= 0){
+        for (Order runningOrder : orderList) {
+            if (!checkForMatchingEnd(runningOrder, order) || amount <= 0) {
                 break;
             }
             strategyOrders.add(runningOrder);
@@ -122,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
         return strategyOrders;
     }
 
-    private void validateOrder(Order order){
+    private void validateOrder(Order order) {
         if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
             throw new RuntimeException("Both price and amount must be positive"); //todo
         }
@@ -130,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
         final User user = order.getUser();
         final int tradingItemId = order.getTradingItem().getItemId();
         final int amountUserOwns = user.getItems().getOrDefault(tradingItemId, 0);
-        final int frozenAmountUserOwns = user.getFrozenItems().getOrDefault(tradingItemId,0);
+        final int frozenAmountUserOwns = user.getFrozenItems().getOrDefault(tradingItemId, 0);
 
         if (order.getOrderType() == OrderType.SELL
                 && amountUserOwns - frozenAmountUserOwns < order.getAmount()) {
@@ -143,13 +141,12 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private boolean checkOrderFeasibility(List<Order> orderList, Order order){
-        if(orderList.isEmpty()){
+    private boolean checkOrderFeasibility(List<Order> orderList, Order order) {
+        if (orderList.isEmpty()) {
             return false;
-        }
-        else{
-            if(order.getOrderType() == OrderType.BUY
-                    && order.getOrderPrice() < orderList.get(0).getOrderPrice()){
+        } else {
+            if (order.getOrderType() == OrderType.BUY
+                    && order.getOrderPrice() < orderList.get(0).getOrderPrice()) {
                 return false;
             }
             return order.getOrderType() != OrderType.SELL
@@ -157,20 +154,20 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private boolean checkForMatchingEnd(Order runningOrder, Order order){
-        if(order.getOrderType() == OrderType.BUY && runningOrder.getOrderPrice() > order.getOrderPrice()){
+    private boolean checkForMatchingEnd(Order runningOrder, Order order) {
+        if (order.getOrderType() == OrderType.BUY && runningOrder.getOrderPrice() > order.getOrderPrice()) {
             return false;
         }
 
         return order.getOrderType() != OrderType.SELL || runningOrder.getOrderPrice() >= order.getOrderPrice();
     }
 
-    private void makeDeals(List<Order> strategyOrders, Order order){
+    private void makeDeals(List<Order> strategyOrders, Order order) {
         User partner;
         User user = order.getUser();
         long orderPrice;
 
-        for(Order currentOrder : strategyOrders){
+        for (Order currentOrder : strategyOrders) {
             orderPrice = currentOrder.getOrderPrice();
             partner = userServiceImpl.read(currentOrder.getUser().getUserId());
             order.setAmount(Math.max(order.getAmount() - currentOrder.getAmount(), 0));
@@ -179,12 +176,12 @@ public class OrderServiceImpl implements OrderService {
             this.setNewDealParameters(deal, currentOrder, orderPrice);
 
             setCustomerOrSeller(user, order, orderPrice, currentOrder.getAmount(), deal);
-            setCustomerOrSeller(partner,currentOrder, orderPrice,currentOrder.getAmount(),deal);
+            setCustomerOrSeller(partner, currentOrder, orderPrice, currentOrder.getAmount(), deal);
 
             userServiceImpl.deal(user, partner);
             dealService.save(deal);
 
-            if(order.getAmount() >= 0){
+            if (order.getAmount() >= 0) {
                 itemsDao.delete(currentOrder.getOrderId());
             }
         }
@@ -194,30 +191,29 @@ public class OrderServiceImpl implements OrderService {
 
         final int tradingItemId = order.getTradingItem().getItemId();
 
-        if(order.getOrderType() == OrderType.BUY) {
+        if (order.getOrderType() == OrderType.BUY) {
             user.setFrozenCash(user.getFrozenCash() - orderPrice);
             user.setCash(user.getCash() - orderPrice * amount);
             user.getItems()
                     .replace(tradingItemId, user.getItems().get(tradingItemId) + amount);
-        }
-        else{
+        } else {
             user.setCash(user.getCash() + orderPrice * amount);
             user.getFrozenItems()
-                    .replace(tradingItemId,user.getFrozenItems().get(tradingItemId) - amount);
+                    .replace(tradingItemId, user.getFrozenItems().get(tradingItemId) - amount);
             user.getItems()
                     .replace(tradingItemId, user.getItems().get(tradingItemId) - amount);
         }
         user.getDeals().add(deal);
     }
 
-    private void setNewDealParameters(Deal deal, Order order, long orderPrice){
+    private void setNewDealParameters(Deal deal, Order order, long orderPrice) {
         deal.setDealDate(new Date());
         deal.setDealPrice(orderPrice);
         deal.setAmount(order.getAmount());
         deal.setDealItemId(order.getTradingItem().getItemId());
     }
 
-    private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType,Order newOrder) {
+    private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType, Order newOrder) {
         Comparator<Order> orderComparator = Comparator.comparing(Order::getOrderPrice);
 
         if (orderType == OrderType.BUY) {

@@ -1,7 +1,6 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.Deal;
-import com.projectparty.entities.Order;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -26,10 +25,10 @@ public class DealDao {
     }
 
     public List<Deal> readAll() {
-            var session = sessionFactory
-                    .getCurrentSession();
-            return session.createQuery("FROM Deal", Deal.class)
-                    .list();
+        var session = sessionFactory
+                .getCurrentSession();
+        return session.createQuery("FROM Deal", Deal.class)
+                .list();
     }
 
     public List<Deal> readAllItemsById(int id) {
@@ -53,7 +52,7 @@ public class DealDao {
             session.load(Deal.class, id);
             session.update(deal);
         } catch (Exception e) {
-            throw new RuntimeException("Update failure"); //todo proper error handling
+            throw new RuntimeException("Update failure", e); //todo proper error handling
         }
 
         return true;
@@ -67,7 +66,7 @@ public class DealDao {
             proxyDeal = session.load(Deal.class, id);
             session.delete(proxyDeal);
         } catch (Exception e) {
-            throw new RuntimeException("Delete failure");// todo
+            throw new RuntimeException("Delete failure", e);// todo
         }
 
         return true;

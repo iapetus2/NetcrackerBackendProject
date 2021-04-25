@@ -20,17 +20,17 @@ public class UserServiceImpl implements UserService {
 
     public static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 
-    UserDao userDao; //todo
+    private static final int OIL_ID = 10;
+    private static final int METALS_ID = 20;
+    private static final long INITIAL_CASH = 100;
+    private static final int INITIAL_ITEM_AMOUNT = 100;
+    private static final int INITIAL_FROZEN_ITEM_AMOUNT = 0;
 
-    UserDetailsServiceImpl userDetailsService;
-
-    PasswordEncoder encoder;
+    private final UserDao userDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, UserDetailsServiceImpl userDetailsService, PasswordEncoder encoder) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
-        this.userDetailsService = userDetailsService;
-        this.encoder = encoder;
     }
 
     @Override
@@ -42,18 +42,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void setUserData(User user){
+    private void setUserData(User user) {
         user.setRole(RoleType.ROLE_USER);
-        Map<Integer,Integer> map = Map.of( //todo refactor magic numbers
-                10,100,
-                20,100
+        Map<Integer, Integer> map = Map.of(
+                OIL_ID, INITIAL_ITEM_AMOUNT,
+                METALS_ID, INITIAL_ITEM_AMOUNT
         );
-        
-        Map<Integer,Integer> frozenMap = Map.of(
-                10,0,
-                20,0
+
+        Map<Integer, Integer> frozenMap = Map.of(
+                OIL_ID, INITIAL_FROZEN_ITEM_AMOUNT,
+                METALS_ID, INITIAL_FROZEN_ITEM_AMOUNT
         );
-        user.setCash(100);
+        user.setCash(INITIAL_CASH);
         user.setItems(map);
         user.setFrozenItems(frozenMap);
     }

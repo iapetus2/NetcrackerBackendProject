@@ -26,7 +26,7 @@ public class TradingItemServiceImpl implements TradingItemService {
 
     @Override
     public List<TradingItem> readAll() {
-       return itemsDao.readAll();
+        return itemsDao.readAll();
     }
 
     @Override

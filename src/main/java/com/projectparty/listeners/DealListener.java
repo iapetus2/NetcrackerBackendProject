@@ -25,18 +25,18 @@ public class DealListener implements PostUpdateEventListener, PostInsertEventLis
         this.tradingItemService = tradingItemService;
     }
 
-    private void onInsertOrUpdate(Deal deal){
+    private void onInsertOrUpdate(Deal deal) {
         //Update tradingItemPrice
         TradingItem tradingItem = tradingItemService.read(deal.getDealItemId());
         tradingItem.setItemPrice(deal.getDealPrice());
-        tradingItemService.update(tradingItem,deal.getDealItemId());
+        tradingItemService.update(tradingItem, deal.getDealItemId());
 
         //Sending message to subscribers
         DealMessage dealMessage = new DealMessage(deal);
         try {
             messageController.sendToGraph(dealMessage);
         } catch (Exception e) {
-            throw new RuntimeException("Could not send message to subscribers",e); //todo
+            throw new RuntimeException("Could not send message to subscribers", e); //todo
         }
     }
 
