@@ -33,23 +33,25 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
+
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+
             return true;
         } catch (SignatureException e) {
-            logger.log(Level.SEVERE, "Invalid JWT signature: {}", e.getMessage()); //todo
+            logger.log(Level.SEVERE, "Invalid JWT signature: {}", e.getStackTrace());
         } catch (MalformedJwtException e) {
-            logger.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
+            logger.log(Level.SEVERE, "Invalid JWT token: {}", e.getStackTrace());
         } catch (ExpiredJwtException e) {
-            logger.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
+            logger.log(Level.SEVERE, "JWT token is expired: {}", e.getStackTrace());
         } catch (UnsupportedJwtException e) {
-            logger.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
+            logger.log(Level.SEVERE, "JWT token is unsupported: {}", e.getStackTrace());
         } catch (IllegalArgumentException e) {
-            logger.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
+            logger.log(Level.SEVERE, "JWT claims string is empty: {}", e.getStackTrace());
         }
 
         return false;

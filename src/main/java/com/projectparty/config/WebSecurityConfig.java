@@ -34,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
-    public WebSecurityConfig(boolean disableDefaults, UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+    public WebSecurityConfig(boolean disableDefaults,
+                             UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
         super(disableDefaults);
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
@@ -70,8 +71,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("api/orders/*").permitAll()
                 .antMatchers("/connect/*").permitAll();
-
-        // .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

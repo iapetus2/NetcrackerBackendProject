@@ -68,22 +68,16 @@ public class UserController {
         //todo code style
         User userFromDb = userService.read(id);
         userFromDb.setCash(user.getCash() + userFromDb.getCash());
-        final boolean updated = userService.update(userFromDb, id);
-        Map<String, Integer> items = new HashMap<>();
-        for(Integer key : userFromDb.getItems().keySet()){
-          items.put(tradingItemDao.read(key).getItemName(), userFromDb.getItems().get(key));
-        }
-        Map<String, Integer> frozenItems = new HashMap<>();
-        for(Integer key : userFromDb.getFrozenItems().keySet()){
-            frozenItems.put(tradingItemDao.read(key).getItemName(), userFromDb.getFrozenItems().get(key));
-        }
+        final boolean updated = userService.updateCash(userFromDb, id);
+
+
         return updated
                 ? ResponseEntity.ok(new UserDataResponse(
                 userFromDb.getUsername(),
                 userFromDb.getCash(),
                 userFromDb.getFrozenCash(),
-                items,
-                frozenItems))
+                userFromDb.getItemNames(),
+                userFromDb.getFrozenItemNames()))
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 

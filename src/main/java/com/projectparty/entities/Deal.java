@@ -15,21 +15,19 @@ import java.util.Date;
 public class Deal {
 
     @Id
-    @NonNull //todo do not use on primitive
     @Column(name = "dealId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int dealId; //todo do not use class name
+    private int id;
 
     @NonNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "dealDate")
-    private Date dealDate;
+    private Date date;
 
     @Column(name = "price")
-    private long dealPrice;
+    private long price;
 
-    @NonNull
     @Column(name = "tradingItemId")
     private int dealItemId;
 

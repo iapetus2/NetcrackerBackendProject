@@ -15,11 +15,10 @@ import java.util.Date;
 public class Order {
 
     @Id
-    @NonNull
     @JsonIgnore
     @Column(name = "orderId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer orderId; //todo should be primitive, do not use order
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "tradingItemId")
@@ -27,16 +26,16 @@ public class Order {
 
     @NonNull
     @Column(name = "type")
-    private OrderType orderType;
+    private OrderType type;
 
     @NonNull //todo remove
     @Column(name = "price")
-    private long orderPrice;
+    private long price;
 
     @NonNull
     @Temporal(TemporalType.DATE)
     @Column(name = "creationDate")
-    private Date orderDate;
+    private Date date;
 
 
     @ManyToOne

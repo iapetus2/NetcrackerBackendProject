@@ -26,7 +26,7 @@ public class TradingItemServiceImpl implements TradingItemService {
     @Override
     public void save(TradingItem tradingItem) {
         itemsDao.save(tradingItem);
-        logger.log(Level.INFO, "New item has been saved to DB, item: " + tradingItem.getItemName());
+        logger.log(Level.INFO, "New item has been saved to DB, item: " + tradingItem.getName());
     }
 
     @Override

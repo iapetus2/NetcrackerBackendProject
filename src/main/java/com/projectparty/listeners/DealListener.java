@@ -29,7 +29,7 @@ public class DealListener implements PostUpdateEventListener, PostInsertEventLis
     private void onInsertOrUpdate(Deal deal) {
         //Update tradingItemPrice
         TradingItem tradingItem = tradingItemService.read(deal.getDealItemId());
-        tradingItem.setItemPrice(deal.getDealPrice());
+        tradingItem.setPrice(deal.getPrice());
         tradingItemService.update(tradingItem, deal.getDealItemId());
 
         //Sending message to subscribers

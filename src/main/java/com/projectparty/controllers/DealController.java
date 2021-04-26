@@ -14,10 +14,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
-//todo add error handling to every method, probably use https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc
 public class DealController {
 
-    private final DealServiceImpl dealService; // todo use interface
+    private final DealServiceImpl dealService;
 
     @Autowired
     public DealController(DealServiceImpl dealService) {
@@ -26,32 +25,42 @@ public class DealController {
 
     @PostMapping(value = "/api/deal")
     public ResponseEntity<?> save(@RequestBody Deal deal) {
-        dealService.save(deal);
+        try {
+            dealService.save(deal);
+        } catch (RuntimeException e) {
+
+            return new ResponseEntity<>("Error while creating deal",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/api/deal/{id}")
-    public ResponseEntity<Deal> read(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> read(@PathVariable(name = "id") int id) {
         final Deal deal = dealService.read(id);
 
         return deal != null
                 ? new ResponseEntity<>(deal, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                : new ResponseEntity<>(String.format("Deal with id %2d is not found", id),
+                HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/api/deal/rooms/{id}")
-    public ResponseEntity<List<DealMessage>> readAll(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> readAll(@PathVariable(name = "id") int id) {
         final List<Deal> deals = dealService.readAllItemsById(id);
 
-        if(deals != null &&  !deals.isEmpty()){
+        if (deals != null && !deals.isEmpty()) {
             final List<DealMessage> messages = deals
                     .stream()
                     .map(DealMessage::new)
                     .collect(Collectors.toList());
+
             return new ResponseEntity<>(messages, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+
+            return new ResponseEntity<>(String.format("Deal with id %2d is not found", id),
+                    HttpStatus.NOT_FOUND);
         }
 
     }
@@ -62,7 +71,8 @@ public class DealController {
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                : new ResponseEntity<>(String.format("Deal with id %2d is not modified", id),
+                HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping(value = "/api/deal/{id}")
@@ -71,7 +81,9 @@ public class DealController {
 
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                : new ResponseEntity<>(String.format("Deal with id %2d is not deleted", id),
+                HttpStatus.NOT_MODIFIED);
     }
 }
+
 

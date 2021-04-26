@@ -2,36 +2,24 @@ package com.projectparty.messages;
 
 import com.projectparty.entities.Order;
 import com.projectparty.entities.OrderType;
+import lombok.Data;
 
+import java.util.Objects;
+
+@Data
 public class OrderMessage {
+
     private final OrderType type;
     private int amount;
     private final long price;
 
     public OrderMessage(Order order) {
-        this.type = order.getOrderType();
+        this.type = order.getType();
         this.amount = order.getAmount();
-        this.price = order.getOrderPrice();
+        this.price = order.getPrice();
     }
 
-    public OrderType getType() {
-        return type;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
-
-    @Override //todo hashcode
+    @Override
     public boolean equals(Object object) {
         boolean equation = false;
 
@@ -43,4 +31,8 @@ public class OrderMessage {
         return equation;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, amount, price);
+    }
 }

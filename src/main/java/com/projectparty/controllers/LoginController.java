@@ -6,7 +6,6 @@ import com.projectparty.entities.User;
 import com.projectparty.requests.LoginRequest;
 import com.projectparty.response.JwtResponse;
 import com.projectparty.security.jwt.JwtUtils;
-import com.projectparty.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,29 +22,25 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
+
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
-    //todo private
-    AuthenticationManager authenticationManager;
-    UserDao userDao; //todo move to services
-    RoleDao roleDao;//todo move to services
-    PasswordEncoder encoder;
-    JwtUtils jwtUtils;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public LoginController(AuthenticationManager authenticationManager, UserDao userDao, RoleDao roleDao, PasswordEncoder encoder, JwtUtils jwtUtils) {
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    public LoginController(AuthenticationManager authenticationManager,
+                           JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
-        this.userDao = userDao;
-        this.roleDao = roleDao;
-        this.encoder = encoder;
         this.jwtUtils = jwtUtils;
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-
-        logger.log(Level.INFO, loginRequest.toString()); //todo should be debug, make message human friendly
+        logger.log(Level.INFO, "Login request parameters came: ", loginRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -58,7 +53,7 @@ public class LoginController {
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
-                userDetails.getUserId(),
+                userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 userDetails.getRole(),

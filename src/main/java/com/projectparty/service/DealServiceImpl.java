@@ -27,9 +27,9 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void save(Deal deal) {
-        deal.setDealDate(new Date());
+        deal.setDate(new Date());
         itemsDao.save(deal);
-        logger.log(Level.INFO, "New deal has been saved to DB, deal_id = " + deal.getDealId());
+        logger.log(Level.INFO, "New deal has been saved to DB, deal_id = " + deal.getId());
     }
 
     @Override

@@ -14,24 +14,23 @@ import java.util.Date;
 public class TradingItem {
 
     @Id
-    @NonNull //todo
     @Column(name = "tradingItemId")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int itemId;
+    private int id;
 
     @NonNull
     @Column(name = "name")
-    private String itemName;
+    private String name;
 
+    @NonNull
     @Column(name = "type")
-    private TradingItemType itemCategory;
+    private TradingItemType type;
 
     @Column(name = "price")
-    @NonNull
-    private long itemPrice;
+    private long price;
 
     @Column(name = "creationDate")
     @Temporal(TemporalType.DATE)
-    private Date itemDate;
+    private Date date;
 
 }

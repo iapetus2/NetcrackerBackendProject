@@ -14,6 +14,8 @@ public interface UserService {
 
     boolean update(User user, int id);
 
+    boolean updateCash(User user, int id);
+
     boolean delete(int id);
 
     boolean deal(User customer, User seller);

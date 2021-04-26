@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(Order order) {
-        order.setUser(userServiceImpl.read(order.getUser().getUserId()));
+        order.setUser(userServiceImpl.read(order.getUser().getId()));
 
         validateOrder(order);
         List<Order> strategyOrders = findMatchingOrders(order);
@@ -47,12 +47,12 @@ public class OrderServiceImpl implements OrderService {
             if (order.getAmount() > 0) {
                 itemsDao.save(order);
                 logger.log(Level.INFO,
-                        "New order has been saved to DB, deal_id = " + order.getOrderId());
+                        "New order has been saved to DB, deal_id = " + order.getId());
             }
         } else {
             itemsDao.save(order);
             logger.log(Level.INFO,
-                    "New order has been saved to DB, deal_id = " + order.getOrderId());
+                    "New order has been saved to DB, deal_id = " + order.getId());
         }
     }
 
@@ -99,22 +99,22 @@ public class OrderServiceImpl implements OrderService {
     private void changeFrozenParameters(Order order) {
         User user = order.getUser();
 
-        if (order.getOrderType() == OrderType.BUY) {
-            user.setFrozenCash(user.getFrozenCash() + order.getAmount() * order.getOrderPrice());
+        if (order.getType() == OrderType.BUY) {
+            user.setFrozenCash(user.getFrozenCash() + order.getAmount() * order.getPrice());
         } else {
             int newFrozenAmount = user.getFrozenItems()
-                    .get(order.getTradingItem().getItemId()) + order.getAmount();
+                    .get(order.getTradingItem().getId()) + order.getAmount();
             user.getFrozenItems()
-                    .replace(order.getTradingItem().getItemId(), newFrozenAmount);
+                    .replace(order.getTradingItem().getId(), newFrozenAmount);
         }
     }
 
     private List<Order> findMatchingOrders(Order order) {
-        final int tradingItemId = order.getTradingItem().getItemId();
+        final int tradingItemId = order.getTradingItem().getId();
 
         List<Order> orderList =
                 filterOrderListByType(itemsDao.readAllItemsById(tradingItemId),
-                        order.getOrderType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
+                        order.getType() == OrderType.BUY ? OrderType.SELL : OrderType.BUY, order);
 
         if (!checkOrderFeasibility(orderList, order)) {
             return Collections.emptyList();
@@ -137,24 +137,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void validateOrder(Order order) {
-        if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
+        if (order.getPrice() <= 0 || order.getAmount() <= 0) {
             logger.severe("Both price and amount must be positive");
             throw new RuntimeException("Both price and amount must be positive");
         }
 
         final User user = order.getUser();
-        final int tradingItemId = order.getTradingItem().getItemId();
+        final int tradingItemId = order.getTradingItem().getId();
         final int amountUserOwns = user.getItems().getOrDefault(tradingItemId, 0);
         final int frozenAmountUserOwns = user.getFrozenItems().getOrDefault(tradingItemId, 0);
 
-        if (order.getOrderType() == OrderType.SELL
+        if (order.getType() == OrderType.SELL
                 && amountUserOwns - frozenAmountUserOwns < order.getAmount()) {
             logger.severe("Client doesn't have enough items to trade");
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
-        if (order.getOrderType() == OrderType.BUY
-                && user.getCash() - user.getFrozenCash() < order.getOrderPrice() * order.getAmount()) {
+        if (order.getType() == OrderType.BUY
+                && user.getCash() - user.getFrozenCash() < order.getPrice() * order.getAmount()) {
             logger.severe("Insufficient funds");
             throw new RuntimeException("Insufficient funds");
         }
@@ -164,21 +164,21 @@ public class OrderServiceImpl implements OrderService {
         if (orderList.isEmpty()) {
             return false;
         } else {
-            if (order.getOrderType() == OrderType.BUY
-                    && order.getOrderPrice() < orderList.get(0).getOrderPrice()) {
+            if (order.getType() == OrderType.BUY
+                    && order.getPrice() < orderList.get(0).getPrice()) {
                 return false;
             }
-            return order.getOrderType() != OrderType.SELL
-                    || order.getOrderPrice() <= orderList.get(0).getOrderPrice();
+            return order.getType() != OrderType.SELL
+                    || order.getPrice() <= orderList.get(0).getPrice();
         }
     }
 
     private boolean checkForMatchingEnd(Order runningOrder, Order order) {
-        if (order.getOrderType() == OrderType.BUY && runningOrder.getOrderPrice() > order.getOrderPrice()) {
+        if (order.getType() == OrderType.BUY && runningOrder.getPrice() > order.getPrice()) {
             return false;
         }
 
-        return order.getOrderType() != OrderType.SELL || runningOrder.getOrderPrice() >= order.getOrderPrice();
+        return order.getType() != OrderType.SELL || runningOrder.getPrice() >= order.getPrice();
     }
 
     private void makeDeals(List<Order> strategyOrders, Order order) {
@@ -187,8 +187,8 @@ public class OrderServiceImpl implements OrderService {
         long orderPrice;
 
         for (Order currentOrder : strategyOrders) {
-            orderPrice = currentOrder.getOrderPrice();
-            partner = userServiceImpl.read(currentOrder.getUser().getUserId());
+            orderPrice = currentOrder.getPrice();
+            partner = userServiceImpl.read(currentOrder.getUser().getId());
             order.setAmount(Math.max(order.getAmount() - currentOrder.getAmount(), 0));
 
             Deal deal = new Deal();
@@ -201,16 +201,16 @@ public class OrderServiceImpl implements OrderService {
             dealService.save(deal);
 
             if (order.getAmount() >= 0) {
-                itemsDao.delete(currentOrder.getOrderId());
+                itemsDao.delete(currentOrder.getId());
             }
         }
     }
 
     private void setCustomerOrSeller(User user, Order order, long orderPrice, int amount, Deal deal) {
 
-        final int tradingItemId = order.getTradingItem().getItemId();
+        final int tradingItemId = order.getTradingItem().getId();
 
-        if (order.getOrderType() == OrderType.BUY) {
+        if (order.getType() == OrderType.BUY) {
             user.setFrozenCash(user.getFrozenCash() - orderPrice);
             user.setCash(user.getCash() - orderPrice * amount);
             user.getItems()
@@ -226,22 +226,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void setNewDealParameters(Deal deal, Order order, long orderPrice) {
-        deal.setDealDate(new Date());
-        deal.setDealPrice(orderPrice);
+        deal.setDate(new Date());
+        deal.setPrice(orderPrice);
         deal.setAmount(order.getAmount());
-        deal.setDealItemId(order.getTradingItem().getItemId());
+        deal.setDealItemId(order.getTradingItem().getId());
     }
 
     private List<Order> filterOrderListByType(List<Order> orderList, OrderType orderType, Order newOrder) {
-        Comparator<Order> orderComparator = Comparator.comparing(Order::getOrderPrice);
+        Comparator<Order> orderComparator = Comparator.comparing(Order::getPrice);
 
         if (orderType == OrderType.BUY) {
             orderComparator = orderComparator.reversed();
         }
 
         return orderList.stream()
-                .filter(order -> (order.getOrderType() == orderType) && (order.getUser().getUserId()
-                        != newOrder.getUser().getUserId()))
+                .filter(order -> (order.getType() == orderType) && (order.getUser().getId()
+                        != newOrder.getUser().getId()))
                 .sorted(orderComparator)
                 .collect(Collectors.toList());
     }

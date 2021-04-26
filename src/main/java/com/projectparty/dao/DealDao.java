@@ -41,7 +41,7 @@ public class DealDao {
         try {
             var session = sessionFactory
                     .getCurrentSession();
-            return session.createQuery("FROM Deal WHERE tradingItemId = :itemId", Deal.class)
+            return session.createQuery("FROM Deal WHERE dealItemId = :itemId", Deal.class)
                     .setParameter("itemId", id)
                     .list();
         } catch (Exception e) {
