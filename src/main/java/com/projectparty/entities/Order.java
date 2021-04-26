@@ -51,19 +51,4 @@ public class Order {
     public String toString() {
         return "";
     }
-
-    @PrePersist //todo refactor
-    public void onCreate() {
-        if (orderPrice <= 0 || amount <= 0) {
-            throw new RuntimeException("Both price and amount must be positive");
-        }
-
-        if (orderType == OrderType.SELL && user.getItems().get(tradingItem.getItemId()) < amount) {
-            throw new RuntimeException("Client doesn't have enough items to trade");
-        }
-
-        if (user.getCash() < orderPrice * amount) {
-            throw new RuntimeException("Insufficient funds");
-        }
-    }
 }

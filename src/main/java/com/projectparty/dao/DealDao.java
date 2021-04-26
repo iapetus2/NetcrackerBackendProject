@@ -1,16 +1,14 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.Deal;
+import com.projectparty.exceptions.BusinessException;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Component
-//todo transactional??
 public class DealDao {
-    private static final Logger logger = Logger.getLogger(DealDao.class.getName()); //todo not used
 
     private final SessionFactory sessionFactory;
 
@@ -19,30 +17,47 @@ public class DealDao {
     }
 
     public void save(Deal deal) {
-        var session = sessionFactory
-                .getCurrentSession();
-        session.save(deal);
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            session.save(deal);
+        } catch (Exception e) {
+            throw new BusinessException("Error while saving new deal to database ", e);
+        }
     }
 
     public List<Deal> readAll() {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.createQuery("FROM Deal", Deal.class)
-                .list();
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.createQuery("FROM Deal", Deal.class)
+                    .list();
+        } catch (Exception e) {
+            throw new BusinessException("Error while reading all deals from database ", e);
+        }
     }
 
     public List<Deal> readAllItemsById(int id) {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.createQuery("FROM Deal WHERE tradingItemId = :itemId", Deal.class)
-                .setParameter("itemId", id)
-                .list();
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.createQuery("FROM Deal WHERE tradingItemId = :itemId", Deal.class)
+                    .setParameter("itemId", id)
+                    .list();
+        } catch (Exception e) {
+            throw new BusinessException("Error while reading all deals from database, itemId = " + id, e);
+        }
+
     }
 
     public Deal read(int id) {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.get(Deal.class, id);
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.get(Deal.class, id);
+        } catch (Exception e) {
+            throw new BusinessException("Error while getting a deal from database ", e);
+        }
     }
 
     public boolean update(Deal deal, int id) {
@@ -52,7 +67,7 @@ public class DealDao {
             session.load(Deal.class, id);
             session.update(deal);
         } catch (Exception e) {
-            throw new RuntimeException("Update failure", e); //todo proper error handling
+            throw new BusinessException("Error while updating a deal ", e);
         }
 
         return true;
@@ -66,7 +81,7 @@ public class DealDao {
             proxyDeal = session.load(Deal.class, id);
             session.delete(proxyDeal);
         } catch (Exception e) {
-            throw new RuntimeException("Delete failure", e);// todo
+            throw new BusinessException("Error while deleting a deal from database ", e);
         }
 
         return true;

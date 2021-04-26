@@ -3,6 +3,7 @@ package com.projectparty.listeners;
 import com.projectparty.controllers.MessageController;
 import com.projectparty.entities.Deal;
 import com.projectparty.entities.TradingItem;
+import com.projectparty.exceptions.BusinessException;
 import com.projectparty.messages.DealMessage;
 import com.projectparty.service.TradingItemServiceImpl;
 import org.hibernate.event.spi.PostInsertEvent;
@@ -36,10 +37,9 @@ public class DealListener implements PostUpdateEventListener, PostInsertEventLis
         try {
             messageController.sendToGraph(dealMessage);
         } catch (Exception e) {
-            throw new RuntimeException("Could not send message to subscribers", e); //todo
+            throw new BusinessException("Could not send message to subscribers", e);
         }
     }
-
 
     @Override
     public void onPostInsert(PostInsertEvent postInsertEvent) {

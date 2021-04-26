@@ -1,6 +1,7 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.User;
+import com.projectparty.exceptions.BusinessException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,13 +10,10 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.Query;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Component
-@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class) //todo move somewhere
+@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
 public class UserDao {
-    Logger logger = Logger.getLogger(UserDao.class.getName()); //todo access
 
     private final SessionFactory sessionFactory;
 
@@ -25,14 +23,12 @@ public class UserDao {
 
     public void save(User user) {
         try {
-            logger.log(Level.INFO, user.toString());
             var session = sessionFactory
                     .getCurrentSession();
             session.save(user);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Exception: ", e); //todo
+            throw new BusinessException("Error while saving new user to database ", e);
         }
-
     }
 
     public User findByUsername(String name) {
@@ -44,16 +40,12 @@ public class UserDao {
 
             int id = (int) query.getSingleResult();
 
-            User user = this.read(id);
-            logger.log(Level.INFO, user.toString());
-            return user;
+            return this.read(id);
         } catch (Exception e) {
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can't read from database", e);
+            throw new BusinessException("Error while reading user's information from database ", e);
         }
 
     }
-
 
     public List<User> readAll() {
         try {
@@ -62,8 +54,7 @@ public class UserDao {
             return session.createQuery("FROM User", User.class)
                     .list();
         } catch (Exception e) {
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read database", e);
+            throw new BusinessException("Error while reading all users from database ", e);
         }
     }
 
@@ -73,8 +64,7 @@ public class UserDao {
                     .getCurrentSession();
             return session.get(User.class, id);
         } catch (Exception e) {
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Can not read from database", e);
+            throw new BusinessException("Error while getting user's information from database ", e);
         }
     }
 
@@ -85,8 +75,7 @@ public class UserDao {
             session.load(User.class, id);
             session.update(user);
         } catch (Exception e) {
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Update failure", e);
+            throw new BusinessException("Error while updating user's information ", e);
         }
 
         return true;
@@ -100,8 +89,7 @@ public class UserDao {
             proxyUser = session.load(User.class, id);
             session.delete(proxyUser);
         } catch (Exception e) {
-            logger.severe("Error: " + e.getMessage());
-            throw new RuntimeException("Delete failure", e);
+            throw new BusinessException("Error while deleting a user from database ", e);
         }
         return true;
     }

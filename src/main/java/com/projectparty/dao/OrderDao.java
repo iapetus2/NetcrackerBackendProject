@@ -1,20 +1,16 @@
 package com.projectparty.dao;
 
 import com.projectparty.entities.Order;
+import com.projectparty.exceptions.BusinessException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Component
-@Transactional
 public class OrderDao {
-    private static final Logger logger = Logger.getLogger(OrderDao.class.getName());
 
     private final SessionFactory sessionFactory;
 
@@ -26,36 +22,44 @@ public class OrderDao {
     public void save(Order order) {
         try {
             Session session = sessionFactory
-                .getCurrentSession();
+                    .getCurrentSession();
             session.save(order);
-        } catch (Exception e) { //todo think of custom ex
-            //todo do not handle here
-            //todo caller never knows if exception occurred
-            //todo make message human friendly
-            logger.log(Level.SEVERE, "Exception: ", e);
+        } catch (Exception e) {
+            throw new BusinessException("Error while saving new order to database ", e);
         }
     }
 
     public List<Order> readAll() {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.createQuery("FROM Order", Order.class)
-                .list();
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.createQuery("FROM Order", Order.class)
+                    .list();
+        } catch (Exception e) {
+            throw new BusinessException("Error while reading all orders from database ", e);
+        }
     }
 
     public List<Order> readAllItemsById(int id) {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.createQuery("FROM Order WHERE tradingItemId = :itemId", Order.class)
-                .setParameter("itemId", id)
-                .list();
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.createQuery("FROM Order WHERE tradingItemId = :itemId", Order.class)
+                    .setParameter("itemId", id)
+                    .list();
+        } catch (Exception e) {
+            throw new BusinessException("Error while reading all orders from database, itemId = " + id, e);
+        }
     }
 
     public Order read(int id) {
-        var session = sessionFactory
-                .getCurrentSession();
-        return session.get(Order.class, id);
-
+        try {
+            var session = sessionFactory
+                    .getCurrentSession();
+            return session.get(Order.class, id);
+        } catch (Exception e) {
+            throw new BusinessException("Error while getting order from database ", e);
+        }
     }
 
     public boolean update(Order order, int id) {
@@ -65,7 +69,7 @@ public class OrderDao {
             session.load(Order.class, id);
             session.update(order);
         } catch (Exception e) {
-            throw new RuntimeException("Update failure"); //todo
+            throw new BusinessException("Error while updating an order ", e);
         }
 
         return true;
@@ -79,7 +83,7 @@ public class OrderDao {
             proxyOrder = session.load(Order.class, id);
             session.delete(proxyOrder);
         } catch (Exception e) {
-            throw new RuntimeException("Delete failure"); //todo
+            throw new BusinessException("Error while deleting an order from database ", e);
         }
 
         return true;

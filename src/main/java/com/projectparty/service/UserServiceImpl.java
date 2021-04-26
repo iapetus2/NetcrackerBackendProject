@@ -3,9 +3,7 @@ package com.projectparty.service;
 import com.projectparty.dao.UserDao;
 import com.projectparty.entities.RoleType;
 import com.projectparty.entities.User;
-import com.projectparty.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-@Transactional //todo remove
+@Transactional
 public class UserServiceImpl implements UserService {
 
     public static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
@@ -38,6 +36,7 @@ public class UserServiceImpl implements UserService {
         setUserData(user);
         logger.log(Level.SEVERE, user.toString());
         userDao.save(user);
+        logger.log(Level.INFO, "New user has been saved to DB, username: " + user.getUsername());
         return true;
     }
 
@@ -60,26 +59,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> readAll() {
+        logger.log(Level.INFO, "Getting all users from database");
         return userDao.readAll();
     }
 
     @Override
     public User read(int id) {
+        logger.log(Level.INFO, "Getting user's information from database, user_id =" + id);
         return userDao.read(id);
     }
 
     @Override
     public boolean update(User user, int id) {
+        logger.log(Level.INFO, "Updating properties of user with id = " + id);
         return userDao.update(user, id);
     }
 
     @Override
     public boolean delete(int id) {
+        logger.log(Level.INFO, "Deleting user with id = " + id);
         return userDao.delete(id);
     }
 
     @Override
     public boolean deal(User customer, User seller) {
+        logger.log(Level.INFO, "Users are making a deal; users: "
+                + customer.getUsername() + " and " + seller.getUsername());
         return userDao.update(customer, customer.getUserId()) &&
                 userDao.update(seller, seller.getUserId());
     }

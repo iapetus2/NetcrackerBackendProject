@@ -2,6 +2,7 @@ package com.projectparty.listeners;
 
 import com.projectparty.controllers.MessageController;
 import com.projectparty.entities.Order;
+import com.projectparty.exceptions.BusinessException;
 import com.projectparty.messages.OrderMessage;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
@@ -38,13 +39,12 @@ public class OrderListener implements PostUpdateEventListener, PostInsertEventLi
     }
 
     private void onInsertOrUpdate(Order order) {
-
-        //Sending message to subscribers
         OrderMessage orderMessage = new OrderMessage(order);
+
         try {
             messageController.sendToOrderBook(orderMessage);
         } catch (Exception e) {
-            throw new RuntimeException("Could not send message to subscribers", e); //todo
+            throw new BusinessException("Could not send message to subscribers", e);
         }
     }
 

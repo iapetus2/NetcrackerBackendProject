@@ -1,22 +1,31 @@
 package com.projectparty.service;
 
+import com.projectparty.dao.DealDao;
 import com.projectparty.dao.OrderDao;
-import com.projectparty.entities.*;
+import com.projectparty.entities.Deal;
+import com.projectparty.entities.Order;
+import com.projectparty.entities.OrderType;
+import com.projectparty.entities.User;
+import com.projectparty.exceptions.BusinessException;
 import com.projectparty.messages.OrderMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional //todo remove?
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao itemsDao;
     private final UserService userServiceImpl;
     private final DealService dealService;
+
+    private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
     @Autowired
     public OrderServiceImpl(OrderDao itemsDao, UserService userServiceImpl, DealService dealService) {
@@ -37,14 +46,19 @@ public class OrderServiceImpl implements OrderService {
             makeDeals(strategyOrders, order);
             if (order.getAmount() > 0) {
                 itemsDao.save(order);
+                logger.log(Level.INFO,
+                        "New order has been saved to DB, deal_id = " + order.getOrderId());
             }
         } else {
             itemsDao.save(order);
+            logger.log(Level.INFO,
+                    "New order has been saved to DB, deal_id = " + order.getOrderId());
         }
     }
 
     @Override
     public List<Order> readAll() {
+        logger.log(Level.INFO,"Getting all orders from database");
         return itemsDao.readAll();
     }
 
@@ -72,11 +86,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order read(int id) {
+        logger.log(Level.INFO,"Getting all orders from database");
         return itemsDao.read(id);
     }
 
     @Override
     public boolean update(Order order, int id) {
+        logger.log(Level.INFO,"Updating properties of an order with id=" + id);
         return itemsDao.update(order, id);
     }
 
@@ -122,7 +138,8 @@ public class OrderServiceImpl implements OrderService {
 
     private void validateOrder(Order order) {
         if (order.getOrderPrice() <= 0 || order.getAmount() <= 0) {
-            throw new RuntimeException("Both price and amount must be positive"); //todo
+            logger.severe("Both price and amount must be positive");
+            throw new RuntimeException("Both price and amount must be positive");
         }
 
         final User user = order.getUser();
@@ -132,11 +149,13 @@ public class OrderServiceImpl implements OrderService {
 
         if (order.getOrderType() == OrderType.SELL
                 && amountUserOwns - frozenAmountUserOwns < order.getAmount()) {
+            logger.severe("Client doesn't have enough items to trade");
             throw new RuntimeException("Client doesn't have enough items to trade");
         }
 
         if (order.getOrderType() == OrderType.BUY
                 && user.getCash() - user.getFrozenCash() < order.getOrderPrice() * order.getAmount()) {
+            logger.severe("Insufficient funds");
             throw new RuntimeException("Insufficient funds");
         }
     }
@@ -229,6 +248,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean delete(int id) {
+        logger.log(Level.INFO,"Deleting order with id = " + id);
         return itemsDao.delete(id);
     }
 
